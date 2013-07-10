@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
+http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+	version="2.5">
+	<servlet>
+		<servlet-name>apartmentspot</servlet-name>
+		<servlet-class>com.viraneel.apartmentspot.http.ApartmentSpotHome</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>masterdata</servlet-name>
+		<servlet-class>com.viraneel.apartmentspot.http.MasterData</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>logout</servlet-name>
+		<servlet-class>com.viraneel.apartmentspot.http.Logout</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>apartmentspot</servlet-name>
+		<url-pattern>/myspot</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>masterdata</servlet-name>
+		<url-pattern>/masterdata</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>logout</servlet-name>
+		<url-pattern>/logout</url-pattern>
+	</servlet-mapping>
+	<welcome-file-list>
+		<welcome-file>index.html</welcome-file>
+	</welcome-file-list>
+</web-app>

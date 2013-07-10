@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+<title>Apartment Spot</title>
+<link rel="stylesheet" href="css/themes/cupertino/jquery-ui.css" />
+<script src="js/jquery-1.9.1.js"></script>
+<script src="js/jquery-ui.js"></script>
+<script type="text/javascript" src="js/jquery.ui.menubar.js"></script>
+<script src="js/jquery.jtable.min.js" type="text/javascript"></script>
+<script
+	src="https://maps.googleapis.com/maps/api/js?v=3.exp&key=AIzaSyB5pYTWyQXC1MIhkQ6zpyRwyDeoKZw32vo&sensor=false&libraries=places"></script>
+<link rel="stylesheet" href="css/apartmentspot.css" type="text/css"
+	media="screen" />
+<script>
+	$(document).ready(function() {
+		$("#menu").menubar({
+			autoExpand : true,
+			menuIcon : true,
+			buttons : true
+		});
+		$('li.ui-menu-item a.ui-corner-all').addClass('ui-widget-header');
+		$("#login").resizable();
+		$("#register").resizable();
+	});
+
+	var map;
+	var infowindow;
+
+	function initialize() {
+		var pune = new google.maps.LatLng(18.5446765, 73.7801782);
+
+		map = new google.maps.Map(document.getElementById('map'), {
+			mapTypeId : google.maps.MapTypeId.ROADMAP,
+			center : pune,
+			zoom : 15
+		});
+
+		var request = {
+			location : pune,
+			radius : 500,
+			types : [ 'store' ]
+		};
+		infowindow = new google.maps.InfoWindow();
+		var service = new google.maps.places.PlacesService(map);
+		service.nearbySearch(request, callback);
+	}
+
+	function callback(results, status) {
+		if (status == google.maps.places.PlacesServiceStatus.OK) {
+			for ( var i = 0; i < results.length; i++) {
+				createMarker(results[i]);
+			}
+		}
+	}
+
+	function createMarker(place) {
+		var placeLoc = place.geometry.location;
+		var marker = new google.maps.Marker({
+			map : map,
+			position : place.geometry.location
+		});
+
+		google.maps.event.addListener(marker, 'click', function() {
+			infowindow.setContent(place.name);
+			infowindow.open(map, this);
+		});
+	}
+
+	//google.maps.event.addDomListener(window, 'load', initialize);
+</script>
+<style>
+#map {
+	position: absolute;
+	top: 200px;
+	left: 300px;
+	height: 400px;
+	width: 600px;
+	border: 1px solid #333;
+	margin-top: 0.6em;
+	height: 400px;
+}
+
+#clientele {
+	position: absolute;
+	width: 600px;
+	height: 50px;
+	padding: 0.1em;
+	top: 100px;
+	left: 300px;
+}
+
+#login {
+	position: absolute;
+	width: 150px;
+	height: 50px;
+	padding: 0.1em;
+	top: 150px;
+	left: 100px;
+}
+
+#register {
+	position: absolute;
+	width: 150px;
+	height: 50px;
+	padding: 0.1em;
+	top: 200px;
+	left: 100px;
+}
+
+#menubar {
+	position: relative;
+	top: 25px;
+	left: 260px;
+	z-index: 1;
+	width:351px;
+}
+</style>
+</head>
+
+<body>
+
+	<div id="headerbar" class="ui-widget-header">
+		<div id="title" class="logoHeader">
+			<a href="index.html"><span class="logo">Community Adda</span></a>
+		</div>
+		<div id="menubar">
+			<ul id="menu">
+				<li><a href="#">Home</a></li>
+				<li><a href="#">About</a>
+					<li><a href="#">Services </a>
+						<ul>
+							<li><a href="#">Software Development</a>
+								<li><a href="#">Interface Design</a></li>
+						</ul></li>
+					<li><a href="#">Portfolio</a>
+						<ul>
+							<li><a href="#">Web Applications</a></li>
+							<li><a href="#">SaaS</a></li>
+							<li><a href="#">Windows Applications</a></li>
+							<li><a href="#">Mobile Applications</a></li>
+							<li><a href="#">Server Applications</a></li>
+						</ul></li>
+					<li><a href="#">Contact</a></li>
+			</ul>
+		</div>
+	</div>
+
+	<div id="login" title="Login" class="ui-widget-content">
+		<div class="ui-widget-header">Login</div>
+		<a href="myspot">Login with google account</a>
+	</div>
+
+
+</body>
+</html>

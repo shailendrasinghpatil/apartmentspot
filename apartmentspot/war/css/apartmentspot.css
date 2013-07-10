@@ -1,0 +1,93 @@
+body {
+	font-family: "Arial Unicode MS", "Helvetica Rounded", Arial,
+		sans-serif;;
+	font-size: 65%;
+}
+#headerbar{
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	/*background: url('/images/logobg.jpg') right center repeat;*/
+	height:60px;
+	vertical-align:center;
+	width:100%;
+}
+
+
+#theme{
+	position: relative;
+	top: 0px;
+	float: right;
+	height: 15px;
+	padding: 0.1em;	
+	width:380px;
+	
+}
+.logo{
+	font-size: 24px;
+	font-weight:bold;
+	float: left;
+	line-height: 50px;
+	margin: 0;
+	padding-left: 7px;
+	margin:1 1px 1 1px;
+}
+.welcome {
+	position: absolute;
+	top: 5px;
+	left: 660px;
+	height: 15px;
+	padding: 0.1em;
+}
+
+.logoHeader {
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	width: 100%;
+	height: 60px;
+	padding: 0.1em;
+}
+
+.menubarcontainer {
+	display:block;
+	position: relative;
+	top: 35px;
+	left: 260px;
+	z-index: 1;
+	max-width:856px;
+}
+
+.ui-menubar {
+	list-style: none;
+	margin: 0;
+	padding-left: 0;
+}
+
+.ui-menubar-item {
+	float: left;
+}
+
+
+
+.ui-menubar .ui-button {
+	float: left;
+	font-weight: normal;
+	border-top-width: 0 !important;
+	border-bottom-width: 0 !important;
+	margin: 0;
+	outline: none;
+}
+
+.ui-menubar .ui-menubar-link {
+	border-right: 1px dashed transparent;
+	border-left: 1px dashed transparent;
+}
+
+.ui-menubar .ui-menu {
+	width: 200px;
+	position: absolute;
+	z-index: 9999;
+	font-weight: normal;
+}
+
