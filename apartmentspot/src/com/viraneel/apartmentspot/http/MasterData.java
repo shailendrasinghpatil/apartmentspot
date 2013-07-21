@@ -83,11 +83,7 @@ public class MasterData extends BaseServlet {
 		}
 	}
 
-	private void getAssetDetails(HttpServletRequest req,
-			HttpServletResponse resp) {
-		// TODO Auto-generated method stub
-		
-	}
+
 
 	private void deleteAssetDetails(HttpServletRequest req,
 			HttpServletResponse resp) {
@@ -123,7 +119,8 @@ public class MasterData extends BaseServlet {
 			assets.setTotalAssets(Integer.parseInt(req
 					.getParameter("totalassets")));
 			assets.set_Asset_Desc(req.getParameter("asset_description"));
-			pm.makePersistent(assets);
+			assets.set_Asset_Model(req.getParameter("assetModel"));
+			
 			if (null != req.getParameter("asset_purchase_date")) {
 				Calendar asset_purchase_date = new GregorianCalendar();
 				try {
@@ -146,7 +143,7 @@ public class MasterData extends BaseServlet {
 				assets.set_Asset_Expiry_Date(asset_expiry_date.getTime());
 			}
 			
-
+			pm.makePersistent(assets);
 			UserSessionProfile userSessionProfile = (UserSessionProfile) req
 					.getSession().getAttribute("userSessionProfile");
 			if (null != userSessionProfile) {
@@ -155,6 +152,7 @@ public class MasterData extends BaseServlet {
 				if (asset == null) {
 					asset = new ArrayList<Asset>();
 				}
+				asset.add(assets);
 				soc.setAsset(asset);
 				pm.makePersistent(soc);
 
@@ -986,7 +984,7 @@ public class MasterData extends BaseServlet {
 
 	}
 
-	/* private void getAssetDetails(HttpServletRequest req,
+	 private void getAssetDetails(HttpServletRequest req,
 			HttpServletResponse resp) throws IOException {
 
 		UserSessionProfile userSessionProfile = (UserSessionProfile) req
@@ -994,32 +992,32 @@ public class MasterData extends BaseServlet {
 		String jsonStr = "";
 		if (null != userSessionProfile) {
 			Society soc = userSessionProfile.getCurrentSociety();
-			List<Building> socbuildings = soc.getBuildings();
+			List<Asset> socAssets = soc.getAsset();
 			int startIndex = Integer.parseInt(req.getParameter("jtStartIndex"));
 			int pageSize = Integer.parseInt(req.getParameter("jtPageSize"));
 			String paramOrderBy = req.getParameter("jtSorting");
 
 			int endIndex = startIndex + pageSize;
-			if (endIndex >= socbuildings.size()) {
-				endIndex = socbuildings.size();
+			if (endIndex >= socAssets.size()) {
+				endIndex = socAssets.size();
 			}
 			System.out.println("StartIndex=" + startIndex + " endIndex="
 					+ endIndex);
 			Query q = pm
-					.newQuery("select from com.viraneel.apartmentspot.entities.Building");
+					.newQuery("select from com.viraneel.apartmentspot.entities.Asset");
 			q.addExtension("datanucleus.query.evaluateInMemory", "true");
-			q.setCandidates(socbuildings);
+			q.setCandidates(socAssets);
 			q.setRange(startIndex, endIndex);
 			q.setOrdering(paramOrderBy);
-			List<Building> buildings = (List<Building>) q.execute();
+			List<Asset> assets = (List<Asset>) q.execute();
 
-			jsonStr = getJSONString(buildings);
+			jsonStr = getJSONString(assets);
 			jsonStr = "{\"Result\":\"OK\",\"Records\":" + jsonStr
-					+ ", \"TotalRecordCount\":\"" + socbuildings.size() + "\"}";
+					+ ", \"TotalRecordCount\":\"" + socAssets.size() + "\"}";
 		}
 		resp.getWriter().print(jsonStr);
 
-	} */
+	} 
 	
 	private void processBuildingsDetails(HttpServletRequest req,
 			HttpServletResponse resp) throws IOException {
