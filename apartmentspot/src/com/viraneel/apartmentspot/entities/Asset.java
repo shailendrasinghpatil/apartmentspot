@@ -28,7 +28,7 @@ public class Asset extends BaseEntity implements Comparable{
     @Persistent
 	private int quantity;
     @Persistent
-	private String Model;
+	private String assetModel;
     @Persistent
     private String asset_purchase_date;
     @Persistent
@@ -90,11 +90,11 @@ public class Asset extends BaseEntity implements Comparable{
 	}
 	
 	public String get_Model() {
-		return Model;
+		return assetModel;
 	}
 	
 	public void set_Asset_Model(String model) {
-		this.Model = model;
+		this.assetModel = model;
 	}
 	public int getquantity() {
 		return quantity;
