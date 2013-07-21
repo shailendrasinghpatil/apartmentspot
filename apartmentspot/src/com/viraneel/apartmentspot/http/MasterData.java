@@ -20,6 +20,7 @@ import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 import com.google.gson.Gson;
+import com.viraneel.apartmentspot.entities.Asset;
 import com.viraneel.apartmentspot.entities.Building;
 import com.viraneel.apartmentspot.entities.House;
 import com.viraneel.apartmentspot.entities.HouseType;
@@ -43,7 +44,13 @@ public class MasterData extends BaseServlet {
 	public void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws IOException {
 		String userAction = req.getParameter("userAction");
-		if (userAction.equalsIgnoreCase("Update_Society_Details")) {
+		if (userAction.equalsIgnoreCase("Update_Asset_Details")) {
+			processAssetDetails(req, resp);
+		}else if (userAction.equals("Get_Asset_Details")) {
+			getAssetDetails(req, resp);
+		} else if (userAction.equals("Delete_Asset_Details")) {
+			deleteAssetDetails(req, resp); 
+		} else if (userAction.equalsIgnoreCase("Update_Society_Details")) {
 			processSocietyDetails(req, resp);
 		} else if (userAction.equalsIgnoreCase("Update_Building_Details")) {
 			processBuildingsDetails(req, resp);
@@ -76,6 +83,18 @@ public class MasterData extends BaseServlet {
 		}
 	}
 
+	private void getAssetDetails(HttpServletRequest req,
+			HttpServletResponse resp) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private void deleteAssetDetails(HttpServletRequest req,
+			HttpServletResponse resp) {
+		// TODO Auto-generated method stub
+		
+	}
+
 	private void getStatusOption(HttpServletRequest req,
 			HttpServletResponse resp) throws IOException {
 		List<Status> statuses = getStatuses();
@@ -91,6 +110,123 @@ public class MasterData extends BaseServlet {
 		System.out.println(jsonStr);
 		resp.getWriter().print(jsonStr);
 
+	}
+	
+	private void processAssetDetails(HttpServletRequest req,
+			HttpServletResponse resp) throws IOException {
+		if (null == req.getParameter("assetID")) {
+			Asset assets = new Asset();
+			assets.setAssetName(req.getParameter("assetName"));
+			assets.setAssetNO(req.getParameter("assetNO"));
+			assets.setquantity(Integer.parseInt(req
+					.getParameter("quantity")));
+			assets.setTotalAssets(Integer.parseInt(req
+					.getParameter("totalassets")));
+			assets.set_Asset_Desc(req.getParameter("asset_description"));
+			pm.makePersistent(assets);
+			if (null != req.getParameter("asset_purchase_date")) {
+				Calendar asset_purchase_date = new GregorianCalendar();
+				try {
+					asset_purchase_date.setTime(new SimpleDateFormat("yyyy-dd-MM").parse(req
+							.getParameter("asset_purchase_date")));
+				} catch (ParseException e) {
+					e.printStackTrace();
+				}
+				assets.set_Asset_Purchase_Date(asset_purchase_date.getTime());
+			}
+			
+			if (null != req.getParameter("asset_expiry_date")) {
+				Calendar asset_expiry_date = new GregorianCalendar();
+				try {
+					asset_expiry_date.setTime(new SimpleDateFormat("yyyy-dd-MM").parse(req
+							.getParameter("asset_expiry_date")));
+				} catch (ParseException e) {
+					e.printStackTrace();
+				}
+				assets.set_Asset_Expiry_Date(asset_expiry_date.getTime());
+			}
+			
+
+			UserSessionProfile userSessionProfile = (UserSessionProfile) req
+					.getSession().getAttribute("userSessionProfile");
+			if (null != userSessionProfile) {
+				Society soc = userSessionProfile.getCurrentSociety();
+				List<Asset> asset = soc.getAsset();
+				if (asset == null) {
+					asset = new ArrayList<Asset>();
+				}
+				soc.setAsset(asset);
+				pm.makePersistent(soc);
+
+				Society refreshedSoc = pm.getObjectById(Society.class,
+						soc.getSocietyID());
+				userSessionProfile.setCurrentSociety(refreshedSoc);
+				req.getSession().setAttribute("userSessionProfile", userSessionProfile);
+				String jsonStr = "{\"Result\":\"OK\",\"Record\":"
+						+ assets.serializedJSON() + "}";
+				resp.getWriter().print(jsonStr);
+			}
+
+		} else {
+			UserSessionProfile userSessionProfile = (UserSessionProfile) req
+					.getSession().getAttribute("userSessionProfile");
+			if (null != userSessionProfile) {
+				Society soc = userSessionProfile.getCurrentSociety();
+				List<Asset> assets = soc.getAsset();
+				for (Asset asset : assets) {
+
+					Gson gson = new Gson();
+					System.out.println(req.getParameter("assetID"));
+
+					long assetID = Long.parseLong(req
+							.getParameter("assetID"));
+					if (asset.getAssetID().getId() == assetID) {
+						asset.setAssetName(req
+								.getParameter("assetName"));
+						asset.setAssetNO(req.getParameter("assetNO"));
+						
+						if (null != req.getParameter("asset_purchase_date")) {
+							Calendar asset_purchase_date = new GregorianCalendar();
+							try {
+								asset_purchase_date.setTime(new SimpleDateFormat("yyyy-dd-MM").parse(req
+										.getParameter("asset_purchase_date")));
+							} catch (ParseException e) {
+								e.printStackTrace();
+							}
+							asset.set_Asset_Purchase_Date(asset_purchase_date.getTime());
+						}
+						
+						if (null != req.getParameter("asset_expiry_date")) {
+							Calendar asset_expiry_date = new GregorianCalendar();
+							try {
+								asset_expiry_date.setTime(new SimpleDateFormat("yyyy-dd-MM").parse(req
+										.getParameter("asset_expiry_date")));
+							} catch (ParseException e) {
+								e.printStackTrace();
+							}
+							asset.set_Asset_Expiry_Date(asset_expiry_date.getTime());
+						}
+												
+						asset.set_Asset_Model(req.getParameter("assetModel"));
+						asset.set_Asset_Desc(req.getParameter("asset_description"));
+						asset.setTotalAssets(Integer.parseInt(req
+								.getParameter("totalassets")));
+						asset.setquantity(Integer.parseInt(req
+								.getParameter("quantity")));
+						pm.makePersistent(asset);
+						Society refreshedSoc = pm.getObjectById(Society.class,
+								soc.getSocietyID());
+						userSessionProfile.setCurrentSociety(refreshedSoc);
+						req.getSession().setAttribute("userSessionProfile", userSessionProfile);
+						String jsonStr = "{\"Result\":\"OK\",\"Record\":"
+								+ asset.serializedJSON() + "}";
+						resp.getWriter().print(jsonStr);
+						break;
+					}
+				}
+			}
+
+		}
 	}
 
 	private void deleteResidentDetails(HttpServletRequest req,
@@ -216,6 +352,7 @@ public class MasterData extends BaseServlet {
 
 	}
 
+	
 	private MemberHouseDetail populateMemberHouseDetailBean(Member member,
 			MemberHouse memberHouse, SocietyMemberRole memberRole) {
 		MemberHouseDetail memberHouseDetail = new MemberHouseDetail();
@@ -610,7 +747,6 @@ public class MasterData extends BaseServlet {
 		memberHouseDetail.setHouseID(house.getHouseID());
 		memberHouseDetail.setHouseName(house.getHouseName());
 		memberHouseDetail.setHouseNo(house.getHouseNo());
-		memberHouseDetail.setBuilding(house.getBuilding());
 		memberHouseDetail.setBuiltupAreaSQFT(house.getBuiltupAreaSQFT());
 		memberHouseDetail.setCarpetAreaSQFT(house.getCarpetAreaSQFT());
 		memberHouseDetail.setTotalAreaSQFT(house.getTotalAreaSQFT());
@@ -850,6 +986,41 @@ public class MasterData extends BaseServlet {
 
 	}
 
+	/* private void getAssetDetails(HttpServletRequest req,
+			HttpServletResponse resp) throws IOException {
+
+		UserSessionProfile userSessionProfile = (UserSessionProfile) req
+				.getSession().getAttribute("userSessionProfile");
+		String jsonStr = "";
+		if (null != userSessionProfile) {
+			Society soc = userSessionProfile.getCurrentSociety();
+			List<Building> socbuildings = soc.getBuildings();
+			int startIndex = Integer.parseInt(req.getParameter("jtStartIndex"));
+			int pageSize = Integer.parseInt(req.getParameter("jtPageSize"));
+			String paramOrderBy = req.getParameter("jtSorting");
+
+			int endIndex = startIndex + pageSize;
+			if (endIndex >= socbuildings.size()) {
+				endIndex = socbuildings.size();
+			}
+			System.out.println("StartIndex=" + startIndex + " endIndex="
+					+ endIndex);
+			Query q = pm
+					.newQuery("select from com.viraneel.apartmentspot.entities.Building");
+			q.addExtension("datanucleus.query.evaluateInMemory", "true");
+			q.setCandidates(socbuildings);
+			q.setRange(startIndex, endIndex);
+			q.setOrdering(paramOrderBy);
+			List<Building> buildings = (List<Building>) q.execute();
+
+			jsonStr = getJSONString(buildings);
+			jsonStr = "{\"Result\":\"OK\",\"Records\":" + jsonStr
+					+ ", \"TotalRecordCount\":\"" + socbuildings.size() + "\"}";
+		}
+		resp.getWriter().print(jsonStr);
+
+	} */
+	
 	private void processBuildingsDetails(HttpServletRequest req,
 			HttpServletResponse resp) throws IOException {
 		if (null == req.getParameter("buildingID")) {
@@ -942,7 +1113,7 @@ public class MasterData extends BaseServlet {
 		resp.getWriter().print(jsonStr);
 
 	}
-
+	
 	private void getBuildingDetails(HttpServletRequest req,
 			HttpServletResponse resp) throws IOException {
 
