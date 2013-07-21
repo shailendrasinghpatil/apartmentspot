@@ -238,5 +238,15 @@ public class Society extends BaseEntity {
 		this.houses = houses;
 	}	
 	
+	@Persistent
+	@Unowned
+	private List<Asset> asset;
 	
+	public List<Asset> getAsset() {
+		return asset;
+	}
+
+	public void setAsset(List<Asset> asset) {
+		this.asset = asset;
+	}	
 }
