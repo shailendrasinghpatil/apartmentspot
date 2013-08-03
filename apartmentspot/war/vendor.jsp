@@ -1,16 +1,16 @@
 <style>
-div#facility-contain {
+div#vendor-contain {
 	margin: 20px 0;
 	width: 100%;
 }
 
-div#facility-contain table {
+div#vendor-contain table {
 	margin: 1em 0;
 	border-collapse: collapse;
 	width: 100%;
 }
 
-div#facility-contain table td,div#facility-contain table th {
+div#vendor-contain table td,div#vendor-contain table th {
 	border: 1px solid #eee;
 	padding: .6em 10px;
 	text-align: left;
@@ -24,18 +24,18 @@ div#facility-contain table td,div#facility-contain table th {
 </style>
 <script>
 	$(function() {
-		$('#facility-contain')
+		$('#vendor-contain')
 				.jtable(
 						{
-							title : <strong> 'Facilities in Society' </strong>,
+							title : <strong> 'Vendors OR Service Providers to Society' </strong>,
 							jqueryuiTheme : true,
 							paging : true,
 							pageSize : 2,
 							pageSizes : [ 2, 5, 10, 15, 20, 25 ],
 							defaultSorting : 'AssetID ASC',
 							deleteConfirmation : function(data) {
-								data.deleteConfirmMessage = 'Are you sure you want to delete the Facility   '
-										+ data.record.facilityName + '?';
+								data.deleteConfirmMessage = 'Are you sure you want to delete the Vendor   '
+										+ data.record.vendorName + '?';
 
 							},
 							sorting : true,
@@ -43,48 +43,63 @@ div#facility-contain table td,div#facility-contain table th {
 								listAction : 'masterdata',
 								createAction : 'masterdata',
 								updateAction : 'masterdata',
-								deleteAction : 'masterdata?userAction=Delete_Facility_Details'
+								deleteAction : 'masterdata?userAction=Delete_Vendor_Details'
 							},
 							fields : {
-								facilityID : {
+								vendorID : {
 									key : true,
 									list : false,
 									create : false,
 									edit : true,
 									display : function(data) {
-										return data.record.facilityID.id;
+										return data.record.vendorID.id;
 									},
 									input : function(data) {
 										if (data.record) {
-											return '<input type="hidden" name="facilityID" value="' + data.record.facilityID.id + '" />';
+											return '<input type="hidden" name="vendorID" value="' + data.record.vendorID.id + '" />';
 										}
 									}
 								},
 								userAction : {
 									create : true,
 									edit : true,
-									defaultValue : 'Update_facility_Details',
+									defaultValue : 'Update_vendor_Details',
 									input : function(data) {
-										return '<input type="hidden" name="userAction" value="Update_facility_Details" />';
+										return '<input type="hidden" name="userAction" value="Update_Vendor_Details" />';
 									},
 									list : false
 								},
-								facilityName : {
-									title : 'Facility <br/> Name',
+								vendorName : {
+									title : 'Vendor <br/> Name',
 									width : '15%',
 									inputClass : 'text  ui-widget-content ui-corner-all inputClass',
 								},
-								facilityType : {
+								vendorType : {
 									title: 'Type',
 				                	width: '7%',
 				                	display: function (data){
-				                		return data.record.facilityType.facilityType;
+				                		return data.record.vendorType.vendorType;
 				                	},
-				                	options:'masterdata?userAction=Get_Facility_Type_Options',
+				                	options:'masterdata?userAction=Get_Vendor_Type_Options',
 				                	inputClass: 'text  ui-widget-content ui-corner-all inputClass'
 				                	},
-								facilityLocation : {
-									title : 'Location',
+								vendorLocation : {
+									title : 'Address',
+									width : '15%',
+									inputClass : 'text  ui-widget-content ui-corner-all inputClass',
+								},
+								vendorContact : {
+									title : 'Contacts',
+									width : '15%',
+									inputClass : 'text  ui-widget-content ui-corner-all inputClass',
+								},
+								vendorPAN : {
+									title : 'PAN',
+									width : '15%',
+									inputClass : 'text  ui-widget-content ui-corner-all inputClass',
+								},
+								vendorTAN : {
+									title : 'TAN',
 									width : '15%',
 									inputClass : 'text  ui-widget-content ui-corner-all inputClass',
 								},
@@ -92,12 +107,12 @@ div#facility-contain table td,div#facility-contain table th {
 								
 							}
 						});
-		$('#facility-contain').jtable('load', {
-			userAction : 'Get_Facility_Details'
+		$('#vendor-contain').jtable('load', {
+			userAction : 'Get_Vendor_Details'
 		});
 	});
 </script>
 
 
 
-<div id="facility-contain" class="ui-widget"></div>
+<div id="vendor-contain" class="ui-widget"></div>

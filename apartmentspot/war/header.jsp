@@ -146,33 +146,7 @@
 			<%
 				}}
 			%>
-			<li><a href="http://communityadda.appspot.com/">Accounts</a>
-				<ul>
-					<li><a href="#">Receipts and Refunds</a>
-						<ul>
-							<li><a href="#">Receipts</a></li>
-							<li><a href="#">Refunds</a></li>
-						</ul></li>
-					<li><a href="#">Budgets</a>
-						<ul>
-							<li><a href="#">Budget Report</a></li>
-							<li><a href="#">Billing Limits</a></li>
-							<li><a href="#">Expense Limits</a></li>
-						</ul></li>
-					<li><a href="#">Payments and Vouchers</a>
-						<ul>
-							<li><a href="#">Payment Vouchers</a></li>
-							<li><a href="#">Indents</a></li>
-							<li><a href="#">Purchase Orders</a></li>
-							<li><a href="#">Approvers</a></li>
-						</ul></li>
-					<li><a href="#">Account Reports</a>
-						<ul>
-							<li><a href="#">TDS Report</a></li>
-							<li><a href="#">Cash Flow Report</a></li>
-							<li><a href="#">Balance Sheet</a></li>
-						</ul></li>
-				</ul></li>
+			
 			<li><a href="#">Complaints and Notices </a>
 				<ul>
 					<li><a href="#">Complaint Box</a></li>

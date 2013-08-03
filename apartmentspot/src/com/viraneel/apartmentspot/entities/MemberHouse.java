@@ -1,6 +1,5 @@
 package com.viraneel.apartmentspot.entities;
 
-import java.util.Calendar;
 import java.util.Date;
 
 import javax.jdo.annotations.PersistenceCapable;

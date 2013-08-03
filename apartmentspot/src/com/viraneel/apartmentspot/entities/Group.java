@@ -10,7 +10,7 @@ import javax.jdo.annotations.PrimaryKey;
 import com.google.appengine.api.datastore.Key;
 
 @PersistenceCapable
-public class Group {
+public class Group extends BaseEntity{
 	
 	@PrimaryKey
 	@Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
@@ -21,5 +21,8 @@ public class Group {
 	
 	@Persistent
 	private List<Member> members;	
+	
+	@Persistent
+	private Key ownerID;
 	
 }

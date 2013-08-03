@@ -34,7 +34,7 @@ div#assets-contain table td,div#assets-contain table th {
 							pageSizes : [ 2, 5, 10, 15, 20, 25 ],
 							defaultSorting : 'AssetID ASC',
 							deleteConfirmation : function(data) {
-								data.deleteConfirmMessage = 'Are you sure you want to delete Asset record? '
+								data.deleteConfirmMessage = 'Are you sure you want to delete the Asset record  '
 										+ data.record.assetName + '?';
 
 							},

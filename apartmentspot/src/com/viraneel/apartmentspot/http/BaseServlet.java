@@ -10,6 +10,9 @@ import javax.servlet.http.HttpServlet;
 import com.google.appengine.api.datastore.Key;
 import com.google.gson.Gson;
 import com.viraneel.apartmentspot.entities.HouseType;
+import com.viraneel.apartmentspot.entities.FacilityType;
+import com.viraneel.apartmentspot.entities.VendorType;
+import com.viraneel.apartmentspot.entities.BillingHeadType;
 import com.viraneel.apartmentspot.entities.Member;
 import com.viraneel.apartmentspot.entities.PermissionLevel;
 import com.viraneel.apartmentspot.entities.ResidentType;
@@ -30,6 +33,9 @@ public abstract class BaseServlet extends HttpServlet {
 	private List<ResidentType> residentTypes;
 	private List<Role> roles;
 	private List<Status> statuses;
+	private List<FacilityType> facilityTypes;
+	private List<VendorType> vendorTypes;
+	private List<BillingHeadType> billingHeadTypes;
 
 	public BaseServlet() {
 		super();
@@ -266,5 +272,144 @@ public abstract class BaseServlet extends HttpServlet {
 	
 		return userSessionProfile;
 	}
+	
+	
+	public List<FacilityType> getFacilityType() {
 
+		if (facilityTypes == null) {
+			Query q1 = pm
+					.newQuery("select from com.viraneel.apartmentspot.entities.FacilityType");
+			try {
+				facilityTypes = (List<FacilityType>) q1.execute();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+
+			if (facilityTypes == null || facilityTypes.isEmpty()) {
+				FacilityType recreation = new FacilityType("Recreation");
+				FacilityType clubhouse = new FacilityType("Club House");
+				FacilityType badminton = new FacilityType("Badminton");
+				FacilityType tennis = new FacilityType("Tennis");
+				FacilityType gym = new FacilityType("Gymnasium");
+				FacilityType swimmingpool = new FacilityType("Swimming pool");
+				FacilityType partyhall = new FacilityType("Party Hall");
+
+				pm.makePersistent(recreation);
+				pm.makePersistent(clubhouse);
+				pm.makePersistent(badminton);
+				pm.makePersistent(tennis);
+				pm.makePersistent(gym);
+				pm.makePersistent(swimmingpool);
+				pm.makePersistent(partyhall);
+				
+
+				facilityTypes = (List<FacilityType>) q1.execute();
+
+			}
+		}
+		return facilityTypes;
+
+	}
+	
+	public List<VendorType> getVendorType() {
+
+		if (vendorTypes == null) {
+			Query q1 = pm
+					.newQuery("select from com.viraneel.apartmentspot.entities.VendorType");
+			try {
+				vendorTypes = (List<VendorType>) q1.execute();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+
+			if (vendorTypes == null || vendorTypes.isEmpty()) {
+				VendorType plumber = new VendorType("Plumber");
+				VendorType electrician = new VendorType("Electrician");
+				VendorType cleaner = new VendorType("Cleaner");
+				VendorType painter = new VendorType("Painter");
+				VendorType security = new VendorType("Security");
+				VendorType intercom = new VendorType("Intercom Services");
+				VendorType liftrepair = new VendorType("Lift Repair");
+				VendorType broadband = new VendorType("Broadband Services");
+				VendorType fabrication = new VendorType("Fabricator");
+				VendorType gardener = new VendorType("Gardening Services");
+				VendorType pestcontrol = new VendorType("Pest Control Services");
+				VendorType watersupplier = new VendorType("Water Supplier");
+				VendorType miscellaneous = new VendorType("Miscellaneous Services");
+				VendorType other = new VendorType("Other Services");
+				
+
+				pm.makePersistent(plumber);
+				pm.makePersistent(electrician);
+				pm.makePersistent(cleaner);
+				pm.makePersistent(painter);
+				pm.makePersistent(security);
+				pm.makePersistent(intercom);
+				pm.makePersistent(liftrepair);
+				pm.makePersistent(broadband);
+				pm.makePersistent(fabrication);
+				pm.makePersistent(gardener);
+				pm.makePersistent(pestcontrol);
+				pm.makePersistent(watersupplier);
+				pm.makePersistent(miscellaneous);
+				pm.makePersistent(other);
+			
+				vendorTypes = (List<VendorType>) q1.execute();
+
+			}
+		}
+		return vendorTypes;
+
+	}
+	
+	public List<BillingHeadType> getBillingHeadType() {
+
+		if (billingHeadTypes == null) {
+			Query q1 = pm
+					.newQuery("select from com.viraneel.apartmentspot.entities.BillingHeadType");
+			try {
+				billingHeadTypes = (List<BillingHeadType>) q1.execute();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+
+			if (billingHeadTypes == null || billingHeadTypes.isEmpty()) {
+				BillingHeadType plumber = new BillingHeadType("Plumber");
+				BillingHeadType electrician = new BillingHeadType("Electrician");
+				BillingHeadType cleaner = new BillingHeadType("Cleaner");
+				BillingHeadType painter = new BillingHeadType("Painter");
+				BillingHeadType security = new BillingHeadType("Security");
+				BillingHeadType intercom = new BillingHeadType("Intercom Services");
+				BillingHeadType liftrepair = new BillingHeadType("Lift Repair");
+				BillingHeadType broadband = new BillingHeadType("Broadband Services");
+				BillingHeadType fabrication = new BillingHeadType("Fabricator");
+				BillingHeadType gardener = new BillingHeadType("Gardening Services");
+				BillingHeadType pestcontrol = new BillingHeadType("Pest Control Services");
+				BillingHeadType watersupplier = new BillingHeadType("Water Supplier");
+				BillingHeadType miscellaneous = new BillingHeadType("Miscellaneous Services");
+				BillingHeadType other = new BillingHeadType("Other Services");
+				
+
+				pm.makePersistent(plumber);
+				pm.makePersistent(electrician);
+				pm.makePersistent(cleaner);
+				pm.makePersistent(painter);
+				pm.makePersistent(security);
+				pm.makePersistent(intercom);
+				pm.makePersistent(liftrepair);
+				pm.makePersistent(broadband);
+				pm.makePersistent(fabrication);
+				pm.makePersistent(gardener);
+				pm.makePersistent(pestcontrol);
+				pm.makePersistent(watersupplier);
+				pm.makePersistent(miscellaneous);
+				pm.makePersistent(other);
+			
+				billingHeadTypes = (List<BillingHeadType>) q1.execute();
+
+			}
+		}
+		return billingHeadTypes;
+
+	}
 }

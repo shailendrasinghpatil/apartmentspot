@@ -103,10 +103,10 @@
 	<div id="tabs">
 		<ul>
 			<li><a href="#tabs-2">Register My Apartment</a></li>
-			<li><a href="#tabs-1">My Apartment is already registerd</a></li>
+			<li><a href="#tabs-1">My Apartment is already registered</a></li>
 		</ul>
 		<div id="tabs-1" class="group">
-			<h3>My Apartment is already registerd</h3>
+			<h3>My Apartment is already registered</h3>
 			<div>
 				<p>Search your apartment</p>
 			</div>

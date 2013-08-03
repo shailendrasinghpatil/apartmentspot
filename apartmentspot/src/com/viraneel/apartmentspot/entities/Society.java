@@ -249,4 +249,59 @@ public class Society extends BaseEntity {
 	public void setAsset(List<Asset> asset) {
 		this.asset = asset;
 	}	
+	
+	@Persistent
+	@Unowned
+	private List<Facility> facility;
+	
+		
+	public List<Facility> getFacility() {
+		return facility;
+	}
+
+	public void setFacility(List<Facility> facility) {
+		this.facility = facility;
+	}	
+	
+	@Persistent
+	@Unowned
+	private List<Vendor> vendor;
+	
+		
+	public List<Vendor> getVendor() {
+		return vendor;
+	}
+
+	public void setVendor(List<Vendor> vendor) {
+		this.vendor = vendor;
+	}	
+	
+	@Persistent
+	@Unowned
+	private List<Refund> refund;
+	
+	
+	public List<Refund> getRefund() {
+		return refund;
+	}
+
+	public void setRefund(List<Refund> refund) {
+		this.refund = refund;
+	}
+
+	@Persistent
+	@Unowned
+	private List<Receipt> receipt;
+
+	public List<Receipt> getReceipt() {
+		return receipt;
+	}
+
+	public void setReceipt(List<Receipt> receipt) {
+		this.receipt = receipt;
+	}
+	
+	
+	
+	
 }

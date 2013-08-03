@@ -106,7 +106,7 @@ div#buildings-contain table td,div#buildings-contain table th {
 	            		list:false
 	            	},
 	                buildingNO: {
-	                	title: 'Building NO',
+	                	title: 'Building No',
 	                	width: '20%'
 	                },
 	                buildingName: {

@@ -133,7 +133,7 @@ div#residents-contain table td,div#residents-contain table th {
 									            		list:false
 									            	},	                
 													houseNo:{
-									                	title: 'No',
+									                	title: 'House No',
 									                	width: '7%',
 									                	inputClass: 'text  ui-widget-content ui-corner-all inputClass'
 									                },
