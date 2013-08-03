@@ -20,6 +20,7 @@ import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 import com.google.gson.Gson;
+
 import com.viraneel.apartmentspot.entities.Asset;
 import com.viraneel.apartmentspot.entities.Building;
 import com.viraneel.apartmentspot.entities.House;
@@ -33,6 +34,10 @@ import com.viraneel.apartmentspot.entities.SocietyMemberRole;
 import com.viraneel.apartmentspot.entities.Status;
 import com.viraneel.apartmentspot.valuebeans.MemberHouseDetail;
 import com.viraneel.apartmentspot.valuebeans.UserSessionProfile;
+import com.viraneel.apartmentspot.entities.FacilityType;
+import com.viraneel.apartmentspot.entities.Facility;
+import com.viraneel.apartmentspot.entities.VendorType;
+import com.viraneel.apartmentspot.entities.Vendor;
 
 @SuppressWarnings("serial")
 public class MasterData extends BaseServlet {
@@ -46,10 +51,26 @@ public class MasterData extends BaseServlet {
 		String userAction = req.getParameter("userAction");
 		if (userAction.equalsIgnoreCase("Update_Asset_Details")) {
 			processAssetDetails(req, resp);
-		}else if (userAction.equals("Get_Asset_Details")) {
+		} else if (userAction.equals("Get_Asset_Details")) {
 			getAssetDetails(req, resp);
 		} else if (userAction.equals("Delete_Asset_Details")) {
-			deleteAssetDetails(req, resp); 
+			deleteAssetDetails(req, resp);
+		} else if (userAction.equalsIgnoreCase("Update_Facility_Details")) {
+			processFacilityDetails(req, resp);
+		} else if (userAction.equals("Get_Facility_Details")) {
+			getFacilityDetails(req, resp);
+		} else if (userAction.equals("Delete_Facility_Details")) {
+			deleteFacilityDetails(req, resp); 
+		} else if (userAction.equals("Get_Facility_Type_Options")) {
+			getFacilityTypes(req, resp);
+		} else if (userAction.equalsIgnoreCase("Update_Vendor_Details")) {
+			processVendorDetails(req, resp);
+		} else if (userAction.equals("Get_Vendor_Details")) {
+			getVendorDetails(req, resp);
+		} else if (userAction.equals("Delete_Vendor_Details")) {
+			deleteVendorDetails(req, resp); 
+		} else if (userAction.equals("Get_Vendor_Type_Options")) {
+			getVendorTypes(req, resp);
 		} else if (userAction.equalsIgnoreCase("Update_Society_Details")) {
 			processSocietyDetails(req, resp);
 		} else if (userAction.equalsIgnoreCase("Update_Building_Details")) {
@@ -85,10 +106,424 @@ public class MasterData extends BaseServlet {
 
 
 
-	private void deleteAssetDetails(HttpServletRequest req,
-			HttpServletResponse resp) {
+	
+	private void getFacilityDetails(HttpServletRequest req,
+			HttpServletResponse resp) throws IOException{
 		// TODO Auto-generated method stub
 		
+		UserSessionProfile userSessionProfile = (UserSessionProfile) req
+				.getSession().getAttribute("userSessionProfile");
+		String jsonStr = "";
+		if (null != userSessionProfile) {
+			Society soc = userSessionProfile.getCurrentSociety();
+			List<Facility> socfacilities = soc.getFacility();
+			int startIndex = Integer.parseInt(req.getParameter("jtStartIndex"));
+			int pageSize = Integer.parseInt(req.getParameter("jtPageSize"));
+			String paramOrderBy = req.getParameter("jtSorting");
+
+			int endIndex = startIndex + pageSize;
+			if (endIndex >= socfacilities.size()) {
+				endIndex = socfacilities.size();
+			}
+			System.out.println("StartIndex=" + startIndex + " endIndex="
+					+ endIndex);
+			Query q = pm
+					.newQuery("select from com.viraneel.apartmentspot.entities.Facility");
+			q.addExtension("datanucleus.query.evaluateInMemory", "true");
+			q.setCandidates(socfacilities);
+			q.setRange(startIndex, endIndex);
+			q.setOrdering(paramOrderBy);
+			List<Facility> facilities = (List<Facility>) q.execute();
+
+			jsonStr = getJSONString(facilities);
+			jsonStr = "{\"Result\":\"OK\",\"Records\":" + jsonStr
+					+ ", \"TotalRecordCount\":\"" + socfacilities.size() + "\"}";
+		}
+		resp.getWriter().print(jsonStr);
+	
+	}
+
+	private void processFacilityDetails(HttpServletRequest req,
+			HttpServletResponse resp) throws IOException {
+	
+		if (null == req.getParameter("facilityID")) {
+			Facility facility = new Facility();
+			facility.setFacilityName(req.getParameter("facilityName"));
+			facility.setLocation(req.getParameter("Location"));
+			
+			if (null != req.getParameter("facilityType")) {
+
+				for (FacilityType facType : getFacilityType()) {
+					if (facType.getFacilityType().equalsIgnoreCase(
+							req.getParameter("facilityType"))) {
+						facility.setFacilityType(facType);
+						break;
+					}
+				}
+			}
+			
+						
+			facility.setDescription(req.getParameter("Description"));
+			
+			pm.makePersistent(facility);
+			
+			UserSessionProfile userSessionProfile = (UserSessionProfile) req
+					.getSession().getAttribute("userSessionProfile");
+			if (null != userSessionProfile) {
+				Society soc = userSessionProfile.getCurrentSociety();
+				List<Facility> facilities = soc.getFacility();
+				if (facilities == null) {
+					facilities = new ArrayList<Facility>();
+				}
+				facilities.add(facility);
+				soc.setFacility(facilities);
+				pm.makePersistent(soc);
+
+				Society refreshedSoc = pm.getObjectById(Society.class,
+						soc.getSocietyID());
+				userSessionProfile.setCurrentSociety(refreshedSoc);
+				req.getSession().setAttribute("userSessionProfile", userSessionProfile);
+				String jsonStr = "{\"Result\":\"OK\",\"Record\":"
+						+ facility.serializedJSON() + "}";
+				resp.getWriter().print(jsonStr);
+			}
+
+		} else {
+			UserSessionProfile userSessionProfile = (UserSessionProfile) req
+					.getSession().getAttribute("userSessionProfile");
+			if (null != userSessionProfile) {
+				Society soc = userSessionProfile.getCurrentSociety();
+				List<Facility> facilities = soc.getFacility();
+				for (Facility facility : facilities) {
+
+					Gson gson = new Gson();
+					System.out.println(req.getParameter("facilityID"));
+
+					long facilityID = Long.parseLong(req
+							.getParameter("facilityID"));
+					if (facility.getFacilityID().getId() == facilityID) {
+						facility.setFacilityName(req.getParameter("facilityName"));
+						facility.setLocation(req.getParameter("Location"));
+						
+					if (null != req.getParameter("facilityType")) {
+
+						for (FacilityType facType : getFacilityType()) {
+							if (facType.getFacilityType().equalsIgnoreCase(
+										req.getParameter("facilityType"))) {
+								facility.setFacilityType(facType);
+								break;
+							}
+						}
+					}
+						
+						
+						facility.setDescription(req.getParameter("Description"));
+											
+						pm.makePersistent(facility);
+						
+						Society refreshedSoc = pm.getObjectById(Society.class,
+								soc.getSocietyID());
+						userSessionProfile.setCurrentSociety(refreshedSoc);
+						req.getSession().setAttribute("userSessionProfile", userSessionProfile);
+						String jsonStr = "{\"Result\":\"OK\",\"Record\":"
+								+ facility.serializedJSON() + "}";
+						resp.getWriter().print(jsonStr);
+						break;
+					}
+				}
+			}
+
+		}
+	
+	}
+
+	
+	private void deleteFacilityDetails(HttpServletRequest req,
+			HttpServletResponse resp) throws IOException {
+		// TODO Auto-generated method stub
+		UserSessionProfile userSessionProfile = (UserSessionProfile) req
+				.getSession().getAttribute("userSessionProfile");
+		if (null != userSessionProfile) {
+			Society soc = userSessionProfile.getCurrentSociety();
+			List<Facility> socFacilities = soc.getFacility();
+
+			Gson gson = new Gson();
+			System.out.println(req.getParameter("assetID[id]"));
+
+			long facilityID = Long.parseLong(req.getParameter("facilityID[id]"));
+			Key facilityKey = KeyFactory.createKey(Facility.class.getSimpleName(),
+					facilityID);
+			Facility facility = pm.getObjectById(Facility.class, facilityKey);
+			
+			if(socFacilities != null){
+				socFacilities.remove(facility);
+			}
+			
+			Query q = pm.newQuery(Facility.class);
+			q.setFilter("facilityID == facilityIDParam");
+			q.declareParameters(Key.class.getName() + " facilityIDParam");
+			q.deletePersistentAll(facilityKey);
+			
+			pm.makePersistent(soc);
+			pm.deletePersistent(facility);
+			
+			System.out.println("Delete Successful");
+			Society refreshedSoc = pm.getObjectById(Society.class,
+					soc.getSocietyID());
+			userSessionProfile.setCurrentSociety(refreshedSoc);
+			req.getSession().setAttribute("userSessionProfile", userSessionProfile);
+			String jsonStr = "{\"Result\":\"OK\"}";
+			resp.getWriter().print(jsonStr);
+		}
+		
+	}
+
+	private void getFacilityTypes(HttpServletRequest req, HttpServletResponse resp)
+			throws IOException {
+		UserSessionProfile userSessionProfile = (UserSessionProfile) req
+				.getSession().getAttribute("userSessionProfile");
+		String jsonStr = "";
+		System.out.println("called");
+		
+		if (null != userSessionProfile) {
+			List<FacilityType> facilityTypes  = getFacilityType();
+			jsonStr = "{\"Result\":\"OK\",\"Options\":[";
+			for (FacilityType facilitytype : facilityTypes) {
+				jsonStr = jsonStr + "{\"DisplayText\":\""
+						+ facilitytype.getFacilityType() + "\",\"Value\":\""
+						+ facilitytype.getFacilityType() + "\"},";
+			}
+
+			jsonStr = jsonStr.substring(0, jsonStr.length() - 1) + "]}";
+
+			System.out.println(jsonStr);
+			resp.getWriter().print(jsonStr);
+		}
+	}
+
+	private void getVendorDetails(HttpServletRequest req,
+			HttpServletResponse resp) throws IOException{
+		// TODO Auto-generated method stub
+		
+		UserSessionProfile userSessionProfile = (UserSessionProfile) req
+				.getSession().getAttribute("userSessionProfile");
+		String jsonStr = "";
+		if (null != userSessionProfile) {
+			Society soc = userSessionProfile.getCurrentSociety();
+			List<Vendor> socvendors = soc.getVendor();
+			int startIndex = Integer.parseInt(req.getParameter("jtStartIndex"));
+			int pageSize = Integer.parseInt(req.getParameter("jtPageSize"));
+			String paramOrderBy = req.getParameter("jtSorting");
+
+			int endIndex = startIndex + pageSize;
+			if (endIndex >= socvendors.size()) {
+				endIndex = socvendors.size();
+			}
+			System.out.println("StartIndex=" + startIndex + " endIndex="
+					+ endIndex);
+			Query q = pm
+					.newQuery("select from com.viraneel.apartmentspot.entities.Vendor");
+			q.addExtension("datanucleus.query.evaluateInMemory", "true");
+			q.setCandidates(socvendors);
+			q.setRange(startIndex, endIndex);
+			q.setOrdering(paramOrderBy);
+			List<Vendor> vendors = (List<Vendor>) q.execute();
+
+			jsonStr = getJSONString(vendors);
+			jsonStr = "{\"Result\":\"OK\",\"Records\":" + jsonStr
+					+ ", \"TotalRecordCount\":\"" + socvendors.size() + "\"}";
+		}
+		resp.getWriter().print(jsonStr);
+	
+	}
+
+	private void processVendorDetails(HttpServletRequest req,
+			HttpServletResponse resp) throws IOException {
+	
+		if (null == req.getParameter("vendorID")) {
+			Vendor vendor = new Vendor();
+			vendor.setVendorName(req.getParameter("vendorName"));
+			vendor.setVendorAddress(req.getParameter("vendorAddress"));
+			vendor.setVendorServiceDescription(req.getParameter("vendorServiceDescription"));
+			vendor.setVendorPAN(req.getParameter("vendorPAN"));
+			vendor.setVendorTAN(req.getParameter("vendorTAN"));
+			vendor.setVendorContact(req.getParameter("vendorContact"));
+			
+			
+			if (null != req.getParameter("vendorType")) {
+
+				for (VendorType vendType : getVendorType()) {
+					if (vendType.getVendorType().equalsIgnoreCase(
+							req.getParameter("vendorType"))) {
+						vendor.setVendorType(vendType);
+						break;
+					}
+				}
+			}
+			
+						
+			vendor.setVendorServiceDescription(req.getParameter("vendorServiceDescription"));
+			
+			pm.makePersistent(vendor);
+			
+			UserSessionProfile userSessionProfile = (UserSessionProfile) req
+					.getSession().getAttribute("userSessionProfile");
+			if (null != userSessionProfile) {
+				Society soc = userSessionProfile.getCurrentSociety();
+				List<Vendor> facilities = soc.getVendor();
+				if (facilities == null) {
+					facilities = new ArrayList<Vendor>();
+				}
+				facilities.add(vendor);
+				soc.setVendor(facilities);
+				pm.makePersistent(soc);
+
+				Society refreshedSoc = pm.getObjectById(Society.class,
+						soc.getSocietyID());
+				userSessionProfile.setCurrentSociety(refreshedSoc);
+				req.getSession().setAttribute("userSessionProfile", userSessionProfile);
+				String jsonStr = "{\"Result\":\"OK\",\"Record\":"
+						+ vendor.serializedJSON() + "}";
+				resp.getWriter().print(jsonStr);
+			}
+
+		} else {
+			UserSessionProfile userSessionProfile = (UserSessionProfile) req
+					.getSession().getAttribute("userSessionProfile");
+			if (null != userSessionProfile) {
+				Society soc = userSessionProfile.getCurrentSociety();
+				List<Vendor> facilities = soc.getVendor();
+				for (Vendor vendor : facilities) {
+
+					Gson gson = new Gson();
+					System.out.println(req.getParameter("vendorID"));
+
+					long vendorID = Long.parseLong(req
+							.getParameter("vendorID"));
+					if (vendor.getVendorID().getId() == vendorID) {
+						vendor.setVendorAddress(req.getParameter("vendorAddress"));
+						vendor.setVendorServiceDescription(req.getParameter("vendorServiceDescription"));
+						vendor.setVendorPAN(req.getParameter("vendorPAN"));
+						vendor.setVendorTAN(req.getParameter("vendorTAN"));
+						vendor.setVendorContact(req.getParameter("vendorContact"));
+						
+					if (null != req.getParameter("vendorType")) {
+
+						for (VendorType facType : getVendorType()) {
+							if (facType.getVendorType().equalsIgnoreCase(
+										req.getParameter("vendorType"))) {
+								vendor.setVendorType(facType);
+								break;
+							}
+						}
+					}
+						
+						
+						vendor.setVendorServiceDescription(req.getParameter("vendorServiceDescription"));
+											
+						pm.makePersistent(vendor);
+						
+						Society refreshedSoc = pm.getObjectById(Society.class,
+								soc.getSocietyID());
+						userSessionProfile.setCurrentSociety(refreshedSoc);
+						req.getSession().setAttribute("userSessionProfile", userSessionProfile);
+						String jsonStr = "{\"Result\":\"OK\",\"Record\":"
+								+ vendor.serializedJSON() + "}";
+						resp.getWriter().print(jsonStr);
+						break;
+					}
+				}
+			}
+
+		}
+	
+	}
+
+	
+	private void deleteVendorDetails(HttpServletRequest req,
+			HttpServletResponse resp) throws IOException {
+		// TODO Auto-generated method stub
+		UserSessionProfile userSessionProfile = (UserSessionProfile) req
+				.getSession().getAttribute("userSessionProfile");
+		if (null != userSessionProfile) {
+			Society soc = userSessionProfile.getCurrentSociety();
+			List<Vendor> socFacilities = soc.getVendor();
+
+			Gson gson = new Gson();
+			System.out.println(req.getParameter("assetID[id]"));
+
+			long vendorID = Long.parseLong(req.getParameter("vendorID[id]"));
+			Key vendorKey = KeyFactory.createKey(Vendor.class.getSimpleName(),
+					vendorID);
+			Vendor vendor = pm.getObjectById(Vendor.class, vendorKey);
+			
+			if(socFacilities != null){
+				socFacilities.remove(vendor);
+			}
+			
+			Query q = pm.newQuery(Vendor.class);
+			q.setFilter("vendorID == vendorIDParam");
+			q.declareParameters(Key.class.getName() + " vendorIDParam");
+			q.deletePersistentAll(vendorKey);
+			
+			pm.makePersistent(soc);
+			pm.deletePersistent(vendor);
+			
+			System.out.println("Delete Successful");
+			Society refreshedSoc = pm.getObjectById(Society.class,
+					soc.getSocietyID());
+			userSessionProfile.setCurrentSociety(refreshedSoc);
+			req.getSession().setAttribute("userSessionProfile", userSessionProfile);
+			String jsonStr = "{\"Result\":\"OK\"}";
+			resp.getWriter().print(jsonStr);
+		}
+		
+	}
+
+	private void getVendorTypes(HttpServletRequest req, HttpServletResponse resp)
+			throws IOException {
+		UserSessionProfile userSessionProfile = (UserSessionProfile) req
+				.getSession().getAttribute("userSessionProfile");
+		String jsonStr = "";
+		System.out.println("called");
+		
+		if (null != userSessionProfile) {
+			List<VendorType> vendorTypes  = getVendorType();
+			jsonStr = "{\"Result\":\"OK\",\"Options\":[";
+			for (VendorType vendortype : vendorTypes) {
+				jsonStr = jsonStr + "{\"DisplayText\":\""
+						+ vendortype.getVendorType() + "\",\"Value\":\""
+						+ vendortype.getVendorType() + "\"},";
+			}
+
+			jsonStr = jsonStr.substring(0, jsonStr.length() - 1) + "]}";
+
+			System.out.println(jsonStr);
+			resp.getWriter().print(jsonStr);
+		}
+	}
+
+	
+	private void getHouseTypes(HttpServletRequest req, HttpServletResponse resp)
+			throws IOException {
+		UserSessionProfile userSessionProfile = (UserSessionProfile) req
+				.getSession().getAttribute("userSessionProfile");
+		String jsonStr = "";
+		System.out.println("called");
+		if (null != userSessionProfile) {
+			List<HouseType> houseTypes = getHouseTypes();
+			jsonStr = "{\"Result\":\"OK\",\"Options\":[";
+			for (HouseType houseType : houseTypes) {
+				jsonStr = jsonStr + "{\"DisplayText\":\""
+						+ houseType.getHouseType() + "\",\"Value\":\""
+						+ houseType.getHouseType() + "\"},";
+			}
+
+			jsonStr = jsonStr.substring(0, jsonStr.length() - 1) + "]}";
+
+			System.out.println(jsonStr);
+			resp.getWriter().print(jsonStr);
+		}
 	}
 
 	private void getStatusOption(HttpServletRequest req,
@@ -107,6 +542,7 @@ public class MasterData extends BaseServlet {
 		resp.getWriter().print(jsonStr);
 
 	}
+	
 	
 	private void processAssetDetails(HttpServletRequest req,
 			HttpServletResponse resp) throws IOException {
@@ -144,6 +580,8 @@ public class MasterData extends BaseServlet {
 			}
 			
 			pm.makePersistent(assets);
+			
+			
 			UserSessionProfile userSessionProfile = (UserSessionProfile) req
 					.getSession().getAttribute("userSessionProfile");
 			if (null != userSessionProfile) {
@@ -242,9 +680,6 @@ public class MasterData extends BaseServlet {
 			Key memberKey = KeyFactory.createKey(Member.class.getSimpleName(),
 					memberID);
 			Member member = pm.getObjectById(Member.class, memberKey);
-			
-			
-			
 			
 			if(members != null){
 				members.remove(member);
@@ -575,28 +1010,7 @@ public class MasterData extends BaseServlet {
 		}
 	}
 
-	private void getHouseTypes(HttpServletRequest req, HttpServletResponse resp)
-			throws IOException {
-		UserSessionProfile userSessionProfile = (UserSessionProfile) req
-				.getSession().getAttribute("userSessionProfile");
-		String jsonStr = "";
-		System.out.println("called");
-		if (null != userSessionProfile) {
-			List<HouseType> houseTypes = getHouseTypes();
-			jsonStr = "{\"Result\":\"OK\",\"Options\":[";
-			for (HouseType houseType : houseTypes) {
-				jsonStr = jsonStr + "{\"DisplayText\":\""
-						+ houseType.getHouseType() + "\",\"Value\":\""
-						+ houseType.getHouseType() + "\"},";
-			}
-
-			jsonStr = jsonStr.substring(0, jsonStr.length() - 1) + "]}";
-
-			System.out.println(jsonStr);
-			resp.getWriter().print(jsonStr);
-		}
-	}
-
+	
 	private void deleteHouseDetails(HttpServletRequest req,
 			HttpServletResponse resp) throws IOException {
 		UserSessionProfile userSessionProfile = (UserSessionProfile) req
@@ -984,7 +1398,49 @@ public class MasterData extends BaseServlet {
 
 	}
 
-	 private void getAssetDetails(HttpServletRequest req,
+	private void deleteAssetDetails(HttpServletRequest req,
+			HttpServletResponse resp) throws IOException {
+		
+		UserSessionProfile userSessionProfile = (UserSessionProfile) req
+				.getSession().getAttribute("userSessionProfile");
+		if (null != userSessionProfile) {
+			Society soc = userSessionProfile.getCurrentSociety();
+			List<Asset> assets = soc.getAsset();
+
+			Gson gson = new Gson();
+			System.out.println(req.getParameter("assetID[id]"));
+
+			long assetID = Long.parseLong(req.getParameter("assetID[id]"));
+			Key assetKey = KeyFactory.createKey(Asset.class.getSimpleName(),
+					assetID);
+			Asset asset = pm.getObjectById(Asset.class, assetKey);
+			
+			
+			
+			
+			if(assets != null){
+				assets.remove(asset);
+			}
+			
+			Query q = pm.newQuery(Asset.class);
+			q.setFilter("assetID == assetIDParam");
+			q.declareParameters(Key.class.getName() + " assetIDParam");
+			q.deletePersistentAll(assetKey);
+			
+			pm.makePersistent(soc);
+			pm.deletePersistent(asset);
+			
+			System.out.println("Delete Successful");
+			Society refreshedSoc = pm.getObjectById(Society.class,
+					soc.getSocietyID());
+			userSessionProfile.setCurrentSociety(refreshedSoc);
+			req.getSession().setAttribute("userSessionProfile", userSessionProfile);
+			String jsonStr = "{\"Result\":\"OK\"}";
+			resp.getWriter().print(jsonStr);
+		}
+	}
+	 
+	private void getAssetDetails(HttpServletRequest req,
 			HttpServletResponse resp) throws IOException {
 
 		UserSessionProfile userSessionProfile = (UserSessionProfile) req
