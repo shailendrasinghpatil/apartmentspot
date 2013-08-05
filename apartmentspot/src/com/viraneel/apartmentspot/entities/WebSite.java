@@ -14,7 +14,7 @@ public class WebSite {
 	static{
 		sections.add(new Section(1,"Dashboard", "home.jsp",""));
 		
-		Section societyInfo = new Section(2, "Society Information", "masterdata.jsp", "");
+		Section societyInfo = new Section(2, "Society Data", "masterdata.jsp", "");
 		
 		List <Section> societySubSections = new ArrayList<Section>();
 		
@@ -79,13 +79,15 @@ public class WebSite {
 				
 					Section payments = new Section (33, "Payments", "accounting.jsp?active=0&subactive=2", "");
 						List <Section> paymentsSubSections = new ArrayList<Section>();
-							Section paymentVouchers = new Section (331, "Payment Vouchers", "accounting.jsp?active=0&subactive=0", "vouchers.jsp");
+							Section paymentVouchers = new Section (331, "Pettycash Payments and Vouchers", "accounting.jsp?active=0&subactive=0", "vouchers.jsp");
 							Section purchaseOrders = new Section (332, "Purchase Orders", "accounting.jsp?active=0&subactive=1", "purchaseorders.jsp");
-							Section indents = new Section (333, "Payment Vouchers", "accounting.jsp?active=0&subactive=2", "indents.jsp");
+							Section expenses = new Section (333, "Expenses & Salaries", "accounting.jsp?active=0&subactive=2", "expenses.jsp");
+							Section bankdeposits = new Section (334, "Bank Deposits", "accounting.jsp?active=0&subactive=3", "bankdeposit.jsp");
 						
 							paymentsSubSections.add(paymentVouchers);
 							paymentsSubSections.add(purchaseOrders);
-							paymentsSubSections.add(indents);
+							paymentsSubSections.add(expenses);
+							paymentsSubSections.add(bankdeposits);
 						
 							payments.setSubSections(paymentsSubSections);
 						
@@ -99,8 +101,8 @@ public class WebSite {
 								
 							reports.setSubSections(reportsSubSections);
 				
-					Section defineBillingHeads = new Section (35, "Define BillingHeads", "accounting.jsp?active=0&subactive=4", "billingheads.jsp");					
-					Section vendorAMCs = new Section (36, "Input AMC records", "accounting.jsp?active=0&subactive=5", "vendoramc.jsp");
+					Section defineBillingHeads = new Section (35, "Define BillingHeads", "accounting.jsp?active=0&subactive=4", "");					
+					Section vendorAMCs = new Section (36, "Input AMC records", "accounting.jsp?active=0&subactive=5", "");
 					
 				accountSubSections.add(refunds);
 				accountSubSections.add(receipts);
