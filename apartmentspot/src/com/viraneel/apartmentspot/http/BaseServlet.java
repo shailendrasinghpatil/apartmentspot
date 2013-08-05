@@ -24,6 +24,8 @@ import com.viraneel.apartmentspot.entities.Status;
 import com.viraneel.apartmentspot.entities.WebSite;
 import com.viraneel.apartmentspot.framework.persistence.PersistenceMgrFactory;
 import com.viraneel.apartmentspot.valuebeans.UserSessionProfile;
+import com.viraneel.apartmentspot.entities.ExpenseType;
+
 
 public abstract class BaseServlet extends HttpServlet {
 
@@ -36,6 +38,7 @@ public abstract class BaseServlet extends HttpServlet {
 	private List<FacilityType> facilityTypes;
 	private List<VendorType> vendorTypes;
 	private List<BillingHeadType> billingHeadTypes;
+	private List<ExpenseType> expenseTypes;
 
 	public BaseServlet() {
 		super();
@@ -374,22 +377,92 @@ public abstract class BaseServlet extends HttpServlet {
 			}
 
 			if (billingHeadTypes == null || billingHeadTypes.isEmpty()) {
-				BillingHeadType plumber = new BillingHeadType("Plumber");
-				BillingHeadType electrician = new BillingHeadType("Electrician");
-				BillingHeadType cleaner = new BillingHeadType("Cleaner");
-				BillingHeadType painter = new BillingHeadType("Painter");
-				BillingHeadType security = new BillingHeadType("Security");
-				BillingHeadType intercom = new BillingHeadType("Intercom Services");
-				BillingHeadType liftrepair = new BillingHeadType("Lift Repair");
-				BillingHeadType broadband = new BillingHeadType("Broadband Services");
-				BillingHeadType fabrication = new BillingHeadType("Fabricator");
-				BillingHeadType gardener = new BillingHeadType("Gardening Services");
-				BillingHeadType pestcontrol = new BillingHeadType("Pest Control Services");
-				BillingHeadType watersupplier = new BillingHeadType("Water Supplier");
-				BillingHeadType miscellaneous = new BillingHeadType("Miscellaneous Services");
-				BillingHeadType other = new BillingHeadType("Other Services");
+				BillingHeadType maintenance = new BillingHeadType("Maintenance");
+				BillingHeadType sinkingfund = new BillingHeadType("Sinking Fund");
+				BillingHeadType developmentfund = new BillingHeadType("Development Fund");
+				BillingHeadType clubmembership = new BillingHeadType("Club Membership");
+				BillingHeadType facilityusage = new BillingHeadType("Facility Usage");
+				BillingHeadType latepayment = new BillingHeadType("Late Payment");
+				BillingHeadType penalty = new BillingHeadType("Penalty");
+				BillingHeadType library = new BillingHeadType("Library Usage");
+				BillingHeadType waterusage = new BillingHeadType("Water Usage");
+				BillingHeadType partyhall = new BillingHeadType("PartyHall charges");
+				BillingHeadType rental = new BillingHeadType("Rental Charges");
+				BillingHeadType transferfee = new BillingHeadType("Transfer Fee");
+				BillingHeadType documentation = new BillingHeadType("Documentation Charges");
+				BillingHeadType chequebounce = new BillingHeadType("Cheque Bounce Charges");
+				BillingHeadType parking = new BillingHeadType("Parking Charges");
+				BillingHeadType other = new BillingHeadType("Other Charges");
 				
 
+				pm.makePersistent(maintenance);
+				pm.makePersistent(sinkingfund);
+				pm.makePersistent(developmentfund);
+				pm.makePersistent(clubmembership);
+				pm.makePersistent(facilityusage);
+				pm.makePersistent(latepayment);
+				pm.makePersistent(penalty);
+				pm.makePersistent(library);
+				pm.makePersistent(waterusage);
+				pm.makePersistent(partyhall);
+				pm.makePersistent(rental);
+				pm.makePersistent(transferfee);
+				pm.makePersistent(documentation);
+				pm.makePersistent(chequebounce);
+				pm.makePersistent(parking);
+				pm.makePersistent(other);
+			
+				billingHeadTypes = (List<BillingHeadType>) q1.execute();
+
+			}
+		}
+		return billingHeadTypes;
+
+	}
+	
+	public List<ExpenseType> getExpenseType() {
+
+		if (expenseTypes == null) {
+			Query q1 = pm
+					.newQuery("select from com.viraneel.apartmentspot.entities.ExpenseType");
+			try {
+				expenseTypes = (List<ExpenseType>) q1.execute();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+
+			if (expenseTypes == null || expenseTypes.isEmpty()) {
+				ExpenseType staffsalary = new ExpenseType("Staff Salary");
+				ExpenseType electricity = new ExpenseType("Electricity Usage Expense");
+				ExpenseType waterusage = new ExpenseType("Water Usage Expense");
+				ExpenseType gasusage = new ExpenseType("Gas Usage Expense");
+				ExpenseType plumber = new ExpenseType("Plumber Services Expenses");
+				ExpenseType electrician = new ExpenseType("Electrician Service Expenses");
+				ExpenseType cleaner = new ExpenseType("Cleaner Service Expenses");
+				ExpenseType painter = new ExpenseType("Painter Service Expenses");
+				ExpenseType security = new ExpenseType("Security Service Expenses");
+				ExpenseType intercom = new ExpenseType("Intercom Service Expenses");
+				ExpenseType liftrepair = new ExpenseType("Lift Repair Services");
+				ExpenseType broadband = new ExpenseType("Broadband Service Expense");
+				ExpenseType fabrication = new ExpenseType("Fabricator Services");
+				ExpenseType gardener = new ExpenseType("Gardening Services");
+				ExpenseType pestcontrol = new ExpenseType("Pest Control Services");
+				ExpenseType watersupplier = new ExpenseType("Water Supplier Services");
+				ExpenseType assetprocurement = new ExpenseType("Asset Procurement");
+				ExpenseType miscellaneous = new ExpenseType("Miscellaneous Services");
+				ExpenseType stationery = new ExpenseType("Stationery Expense");
+				ExpenseType travel = new ExpenseType("Travel Expense");
+				ExpenseType generalmaintenance = new ExpenseType("General Maintenance Expenses");
+				ExpenseType other = new ExpenseType("Other Expenses");
+				
+
+				pm.makePersistent(staffsalary);
+				pm.makePersistent(electricity);
+				pm.makePersistent(waterusage);
+				pm.makePersistent(travel);
+				pm.makePersistent(gasusage);
+				pm.makePersistent(generalmaintenance);
+				pm.makePersistent(stationery);
 				pm.makePersistent(plumber);
 				pm.makePersistent(electrician);
 				pm.makePersistent(cleaner);
@@ -402,14 +475,15 @@ public abstract class BaseServlet extends HttpServlet {
 				pm.makePersistent(gardener);
 				pm.makePersistent(pestcontrol);
 				pm.makePersistent(watersupplier);
+				pm.makePersistent(assetprocurement);
 				pm.makePersistent(miscellaneous);
 				pm.makePersistent(other);
 			
-				billingHeadTypes = (List<BillingHeadType>) q1.execute();
+				expenseTypes = (List<ExpenseType>) q1.execute();
 
 			}
 		}
-		return billingHeadTypes;
+		return expenseTypes;
 
 	}
 }
