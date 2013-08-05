@@ -1,5 +1,5 @@
-<%@ page
-	import="com.viraneel.apartmentspot.valuebeans.UserSessionProfile"%>
+<%--  %> <%@ page import="com.viraneel.apartmentspot.valuebeans.UserSessionProfile"%>
+
 <%@ page import="com.viraneel.apartmentspot.entities.BillingHeads"%>
 <%@ page import="com.viraneel.apartmentspot.entities.Refund"%>
 <%@ page import="com.viraneel.apartmentspot.entities.Receipt"%>
@@ -220,4 +220,4 @@ fieldset>div {
 	
 	});
 </script>
-
+-- %>
