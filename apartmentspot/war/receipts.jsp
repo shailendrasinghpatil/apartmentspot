@@ -35,7 +35,7 @@ div#receipts-contain table td,div#receipts-contain table th {
 							defaultSorting : 'receiptID ASC',
 							deleteConfirmation : function(data) {
 								data.deleteConfirmMessage = 'Are you sure you want to delete the Receipt record  '
-										+ data.record.receiptNO + '?';
+										+ data.record.receiptNumber + '?';
 
 							},
 							sorting : true,
