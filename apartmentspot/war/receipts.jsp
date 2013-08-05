@@ -74,6 +74,13 @@ div#receipts-contain table td,div#receipts-contain table th {
 									width : '10%',
 									inputClass : 'text  ui-widget-content ui-corner-all inputClass',
 								},
+								receiptDate : {
+									title : 'Date',
+									width : '15%',
+									inputClass : 'text  ui-widget-content ui-corner-all inputClass',
+									type : 'date',
+									displayFormat : 'mm-dd-yy'
+								},
 								receiptTo : {
 									title : 'Receipient',
 									width : '20%',
@@ -98,13 +105,7 @@ div#receipts-contain table td,div#receipts-contain table th {
 				                	options:'accounting?userAction=Get_BillingHead_Options',
 				                	inputClass: 'text  ui-widget-content ui-corner-all inputClass'
 				                	},
-								receiptDate : {
-									title : 'Date',
-									width : '15%',
-									inputClass : 'text  ui-widget-content ui-corner-all inputClass',
-									type : 'date',
-									displayFormat : 'dd-mm-yy'
-								},
+								
 								totalreceipts : {
 									title : 'Total <br/> Receipts',
 									width : '8%',
