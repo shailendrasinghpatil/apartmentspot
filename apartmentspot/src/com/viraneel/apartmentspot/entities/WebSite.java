@@ -51,7 +51,7 @@ public class WebSite {
 		
 		residentRecords.setSubSections(residentSubSections);
 		
-		Section committee = new Section (231, "Committee", "masterdata.jsp?active=2", "committee.jsp");
+		Section committee = new Section (231, "Groups", "masterdata.jsp?active=2", "committee.jsp");
 		Section vendors = new Section (241, "Vendors", "masterdata.jsp?active=3", "vendors.jsp");
 		Section docrepository = new Section (251, "Document Repository", "masterdata.jsp?active=", "documents.jsp");
 		Section alerts = new Section (261, "Define Alerts", "masterdata.jsp?active=5","alerts.jsp");

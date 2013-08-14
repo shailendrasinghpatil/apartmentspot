@@ -240,6 +240,18 @@ public class Society extends BaseEntity {
 	
 	@Persistent
 	@Unowned
+	private List<Group> groups;	
+	
+	public List<Group> getGroups() {
+		return groups;
+	}
+
+	public void setGroups(List<Group> groups) {
+		this.groups = groups;
+	}
+
+	@Persistent
+	@Unowned
 	private List<Asset> asset;
 	
 	public List<Asset> getAsset() {
@@ -301,17 +313,7 @@ public class Society extends BaseEntity {
 		this.receipt = receipt;
 	}
 	
-	@Persistent
-	@Unowned
-	private List<PurchaseOrder> purchaseOrder;
 
-	public List<PurchaseOrder> getPurchaseOrder() {
-		return purchaseOrder;
-	}
-
-	public void setPurchaseOrder(List<PurchaseOrder> purchaseOrder) {
-		this.purchaseOrder = purchaseOrder;
-	}
 	
 	
 	@Persistent
