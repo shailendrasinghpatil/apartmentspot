@@ -13,6 +13,10 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 		<servlet-class>com.viraneel.apartmentspot.http.MasterData</servlet-class>
 	</servlet>
 	<servlet>
+		<servlet-name>group</servlet-name>
+		<servlet-class>com.viraneel.apartmentspot.http.GroupManager</servlet-class>
+	</servlet>	
+	<servlet>
 		<servlet-name>logout</servlet-name>
 		<servlet-class>com.viraneel.apartmentspot.http.Logout</servlet-class>
 	</servlet>
@@ -28,6 +32,10 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 		<servlet-name>logout</servlet-name>
 		<url-pattern>/logout</url-pattern>
 	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>group</servlet-name>
+		<url-pattern>/group</url-pattern>
+	</servlet-mapping>	
 	<welcome-file-list>
 		<welcome-file>index.html</welcome-file>
 	</welcome-file-list>
