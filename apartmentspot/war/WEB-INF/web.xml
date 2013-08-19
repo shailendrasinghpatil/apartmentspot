@@ -20,6 +20,10 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 		<servlet-name>logout</servlet-name>
 		<servlet-class>com.viraneel.apartmentspot.http.Logout</servlet-class>
 	</servlet>
+	<servlet>
+		<servlet-name>accounting</servlet-name>
+		<servlet-class>com.viraneel.apartmentspot.http.Accounting</servlet-class>
+	</servlet>	
 	<servlet-mapping>
 		<servlet-name>apartmentspot</servlet-name>
 		<url-pattern>/myspot</url-pattern>
@@ -35,7 +39,11 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 	<servlet-mapping>
 		<servlet-name>group</servlet-name>
 		<url-pattern>/group</url-pattern>
-	</servlet-mapping>	
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>accounting</servlet-name>
+		<url-pattern>/accounting</url-pattern>
+	</servlet-mapping>		
 	<welcome-file-list>
 		<welcome-file>index.html</welcome-file>
 	</welcome-file-list>

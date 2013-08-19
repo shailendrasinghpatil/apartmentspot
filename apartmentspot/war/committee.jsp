@@ -26,8 +26,8 @@ div#groups-contain table td,div#groups-contain table th {
 	$(function() {
         $( "#dialog4" ).dialog({
             autoOpen: false,
-            height:$(window).height() - 50,
-            width:$(window).width() - 50,
+            height:$(window).height() - 150,
+            width:$(window).width() - 250,
                 show: {
                 effect: "blind",
                 duration: 400,
@@ -36,7 +36,23 @@ div#groups-contain table td,div#groups-contain table th {
                 hide: {
                 effect: "explode",
                 duration: 400
-                }
+                },
+                close: function (e) {
+                    $(this).empty();
+                   // $(this).dialog('destroy');
+                },                
+                open: function (){              	
+                	$(this).load("managegroupmembers.jsp");
+                	//$(this).parent().appendTo("body");
+                },
+    			buttons : {
+    				"Save" : function() {
+    					$(this).dialog("close");
+    				},
+    				"Cancel" : function() {
+    					$(this).dialog("close");
+    				}    				
+    			}
         });
         
 		$('#groups-contain')
@@ -108,9 +124,8 @@ div#groups-contain table td,div#groups-contain table th {
 									            sorting:false,
 									            toolbar: {
 									            	items:[{
-									            		text: 'Add Members',
-									            		click : function (){
-									            				
+									            		text: 'Add /Remove Members',
+									            		click : function (){									            				
 									                            $( "#dialog4").dialog("open");				            			
 									            		}
 									            	}]
@@ -197,12 +212,12 @@ div#groups-contain table td,div#groups-contain table th {
 		$('#groups-contain').jtable('load', {
 			userAction : 'Get_Group_Details'
 		});
-
+		
 	});
 	
 </script>
 
 <div id="groups-contain" class="ui-widget"></div>
-   <div id="dialog4">
-        <div class="content4">hello world</div>
+   <div id="dialog4" title="Add/Remove Members">
+        <div class="content4"></div>
     </div>
