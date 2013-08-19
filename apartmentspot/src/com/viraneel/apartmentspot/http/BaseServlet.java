@@ -6,6 +6,7 @@ import java.util.List;
 import javax.jdo.PersistenceManager;
 import javax.jdo.Query;
 import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
 
 import com.google.appengine.api.datastore.Key;
 import com.google.gson.Gson;
@@ -486,4 +487,27 @@ public abstract class BaseServlet extends HttpServlet {
 		return expenseTypes;
 
 	}
+
+	protected void setQueryRangeAndOrder(HttpServletRequest req, Query q,
+			int size) {
+				if (null != req.getParameter("jtStartIndex")) {
+					
+					int startIndex = Integer.parseInt(req
+							.getParameter("jtStartIndex"));
+					int pageSize = Integer.parseInt(req.getParameter("jtPageSize"));
+			
+					int endIndex = startIndex + pageSize;
+					if (endIndex >= size) {
+						endIndex = size;
+					}
+					System.out.println("StartIndex=" + startIndex + " endIndex="
+							+ endIndex);
+					q.setRange(startIndex, endIndex);
+				}
+			
+				if (null != req.getParameter("jtSorting")) {
+					String paramOrderBy = req.getParameter("jtSorting");
+					q.setOrdering(paramOrderBy);
+				}
+			}
 }
