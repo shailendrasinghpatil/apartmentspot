@@ -1,7 +1,6 @@
 package com.viraneel.apartmentspot.entities;
 
 
-import java.util.Calendar;
 import java.util.List;
 
 import javax.jdo.annotations.IdGeneratorStrategy;
@@ -11,6 +10,7 @@ import javax.jdo.annotations.PrimaryKey;
 
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.datanucleus.annotations.Unowned;
+
 
 @PersistenceCapable
 public class Member extends BaseEntity {
