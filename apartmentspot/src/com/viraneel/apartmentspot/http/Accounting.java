@@ -118,22 +118,12 @@ public class Accounting extends BaseServlet {
 		if (null != userSessionProfile) {
 			Society soc = userSessionProfile.getCurrentSociety();
 			List<Refund> refunds = soc.getRefund();
-			int startIndex = Integer.parseInt(req.getParameter("jtStartIndex"));
-			int pageSize = Integer.parseInt(req.getParameter("jtPageSize"));
-			String paramOrderBy = req.getParameter("jtSorting");
-
-			int endIndex = startIndex + pageSize;
-			if (endIndex >= refunds.size()) {
-				endIndex = refunds.size();
-			}
-			System.out.println("StartIndex=" + startIndex + " endIndex="
-					+ endIndex);
+			int size = refunds.size();
 			Query q = pm
 					.newQuery("select from com.viraneel.apartmentspot.entities.Refund");
 			q.addExtension("datanucleus.query.evaluateInMemory", "true");
 			q.setCandidates(refunds);
-			q.setRange(startIndex, endIndex);
-			q.setOrdering(paramOrderBy);
+			setQueryRangeAndOrder(req, q, size);
 			List<Refund> refund = (List<Refund>) q.execute();
 
 			jsonStr = getJSONString(refund);
@@ -343,22 +333,12 @@ public class Accounting extends BaseServlet {
 		if (null != userSessionProfile) {
 			Society soc = userSessionProfile.getCurrentSociety();
 			List<Receipt> receipts = soc.getReceipt();
-			int startIndex = Integer.parseInt(req.getParameter("jtStartIndex"));
-			int pageSize = Integer.parseInt(req.getParameter("jtPageSize"));
-			String paramOrderBy = req.getParameter("jtSorting");
-
-			int endIndex = startIndex + pageSize;
-			if (endIndex >= receipts.size()) {
-				endIndex = receipts.size();
-			}
-			System.out.println("StartIndex=" + startIndex + " endIndex="
-					+ endIndex);
+			int size = receipts.size();
 			Query q = pm
 					.newQuery("select from com.viraneel.apartmentspot.entities.Receipt");
 			q.addExtension("datanucleus.query.evaluateInMemory", "true");
 			q.setCandidates(receipts);
-			q.setRange(startIndex, endIndex);
-			q.setOrdering(paramOrderBy);
+			setQueryRangeAndOrder(req, q, size);
 			List<Receipt> receipt = (List<Receipt>) q.execute();
 
 			jsonStr = getJSONString(receipt);
@@ -564,22 +544,13 @@ public class Accounting extends BaseServlet {
 		if (null != userSessionProfile) {
 			Society soc = userSessionProfile.getCurrentSociety();
 			List<Voucher> vouchers = soc.getVoucher();
-			int startIndex = Integer.parseInt(req.getParameter("jtStartIndex"));
-			int pageSize = Integer.parseInt(req.getParameter("jtPageSize"));
-			String paramOrderBy = req.getParameter("jtSorting");
+			int size = vouchers.size();
 
-			int endIndex = startIndex + pageSize;
-			if (endIndex >= vouchers.size()) {
-				endIndex = vouchers.size();
-			}
-			System.out.println("StartIndex=" + startIndex + " endIndex="
-					+ endIndex);
 			Query q = pm
 					.newQuery("select from com.viraneel.apartmentspot.entities.Voucher");
 			q.addExtension("datanucleus.query.evaluateInMemory", "true");
 			q.setCandidates(vouchers);
-			q.setRange(startIndex, endIndex);
-			q.setOrdering(paramOrderBy);
+			setQueryRangeAndOrder(req, q, size);
 			List<Voucher> voucher = (List<Voucher>) q.execute();
 
 			jsonStr = getJSONString(voucher);
@@ -787,22 +758,12 @@ public class Accounting extends BaseServlet {
 		if (null != userSessionProfile) {
 			Society soc = userSessionProfile.getCurrentSociety();
 			List<Expense> expenses = soc.getExpense();
-			int startIndex = Integer.parseInt(req.getParameter("jtStartIndex"));
-			int pageSize = Integer.parseInt(req.getParameter("jtPageSize"));
-			String paramOrderBy = req.getParameter("jtSorting");
-
-			int endIndex = startIndex + pageSize;
-			if (endIndex >= expenses.size()) {
-				endIndex = expenses.size();
-			}
-			System.out.println("StartIndex=" + startIndex + " endIndex="
-					+ endIndex);
+			int size = expenses.size();
 			Query q = pm
 					.newQuery("select from com.viraneel.apartmentspot.entities.Expense");
 			q.addExtension("datanucleus.query.evaluateInMemory", "true");
 			q.setCandidates(expenses);
-			q.setRange(startIndex, endIndex);
-			q.setOrdering(paramOrderBy);
+			setQueryRangeAndOrder(req, q, size);
 			List<Expense> expense = (List<Expense>) q.execute();
 
 			jsonStr = getJSONString(expense);

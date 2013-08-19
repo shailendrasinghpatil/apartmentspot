@@ -117,22 +117,13 @@ public class MasterData extends BaseServlet {
 		if (null != userSessionProfile) {
 			Society soc = userSessionProfile.getCurrentSociety();
 			List<Facility> socfacilities = soc.getFacility();
-			int startIndex = Integer.parseInt(req.getParameter("jtStartIndex"));
-			int pageSize = Integer.parseInt(req.getParameter("jtPageSize"));
-			String paramOrderBy = req.getParameter("jtSorting");
+			int size = socfacilities.size();
 
-			int endIndex = startIndex + pageSize;
-			if (endIndex >= socfacilities.size()) {
-				endIndex = socfacilities.size();
-			}
-			System.out.println("StartIndex=" + startIndex + " endIndex="
-					+ endIndex);
 			Query q = pm
 					.newQuery("select from com.viraneel.apartmentspot.entities.Facility");
 			q.addExtension("datanucleus.query.evaluateInMemory", "true");
 			q.setCandidates(socfacilities);
-			q.setRange(startIndex, endIndex);
-			q.setOrdering(paramOrderBy);
+			setQueryRangeAndOrder(req, q, size);
 			List<Facility> facilities = (List<Facility>) q.execute();
 
 			jsonStr = getJSONString(facilities);
@@ -311,22 +302,13 @@ public class MasterData extends BaseServlet {
 		if (null != userSessionProfile) {
 			Society soc = userSessionProfile.getCurrentSociety();
 			List<Vendor> socvendors = soc.getVendor();
-			int startIndex = Integer.parseInt(req.getParameter("jtStartIndex"));
-			int pageSize = Integer.parseInt(req.getParameter("jtPageSize"));
-			String paramOrderBy = req.getParameter("jtSorting");
 
-			int endIndex = startIndex + pageSize;
-			if (endIndex >= socvendors.size()) {
-				endIndex = socvendors.size();
-			}
-			System.out.println("StartIndex=" + startIndex + " endIndex="
-					+ endIndex);
 			Query q = pm
 					.newQuery("select from com.viraneel.apartmentspot.entities.Vendor");
 			q.addExtension("datanucleus.query.evaluateInMemory", "true");
 			q.setCandidates(socvendors);
-			q.setRange(startIndex, endIndex);
-			q.setOrdering(paramOrderBy);
+			int size =  socvendors.size();
+			setQueryRangeAndOrder(req, q, size);
 			List<Vendor> vendors = (List<Vendor>) q.execute();
 
 			jsonStr = getJSONString(vendors);
@@ -862,25 +844,9 @@ public class MasterData extends BaseServlet {
 
 			q.addExtension("datanucleus.query.evaluateInMemory", "true");
 			q.setCandidates(socmembers);
+			int size = socmembers.size();
 
-			if (null != req.getParameter("jtStartIndex")) {
-				int startIndex = Integer.parseInt(req
-						.getParameter("jtStartIndex"));
-				int pageSize = Integer.parseInt(req.getParameter("jtPageSize"));
-
-				int endIndex = startIndex + pageSize;
-				if (endIndex >= socmembers.size()) {
-					endIndex = socmembers.size();
-				}
-				System.out.println("StartIndex=" + startIndex + " endIndex="
-						+ endIndex);
-				q.setRange(startIndex, endIndex);
-			}
-
-			if (null != req.getParameter("jtSorting")) {
-				String paramOrderBy = req.getParameter("jtSorting");
-				q.setOrdering(paramOrderBy);
-			}
+			setQueryRangeAndOrder(req, q, size);
 			List<Member> members = null;
 			if (memberHouseList.size() > 0) {
 				members = new ArrayList<Member>();
@@ -1091,25 +1057,8 @@ public class MasterData extends BaseServlet {
 			Query q = pm.newQuery(queryText);
 			q.addExtension("datanucleus.query.evaluateInMemory", "true");
 			q.setCandidates(sochouses);
-
-			if (null != req.getParameter("jtStartIndex")) {
-				int startIndex = Integer.parseInt(req
-						.getParameter("jtStartIndex"));
-				int pageSize = Integer.parseInt(req.getParameter("jtPageSize"));
-
-				int endIndex = startIndex + pageSize;
-				if (endIndex >= sochouses.size()) {
-					endIndex = sochouses.size();
-				}
-				System.out.println("StartIndex=" + startIndex + " endIndex="
-						+ endIndex);
-				q.setRange(startIndex, endIndex);
-			}
-
-			if (req.getParameter("jtSorting") != null) {
-				String paramOrderBy = req.getParameter("jtSorting");
-				q.setOrdering(paramOrderBy);
-			}
+			int size = sochouses.size();
+			setQueryRangeAndOrder(req, q, size);
 
 			List<House> houses = null;
 			if (memberHouseList.size() > 0) {
@@ -1449,22 +1398,12 @@ public class MasterData extends BaseServlet {
 		if (null != userSessionProfile) {
 			Society soc = userSessionProfile.getCurrentSociety();
 			List<Asset> socAssets = soc.getAsset();
-			int startIndex = Integer.parseInt(req.getParameter("jtStartIndex"));
-			int pageSize = Integer.parseInt(req.getParameter("jtPageSize"));
-			String paramOrderBy = req.getParameter("jtSorting");
-
-			int endIndex = startIndex + pageSize;
-			if (endIndex >= socAssets.size()) {
-				endIndex = socAssets.size();
-			}
-			System.out.println("StartIndex=" + startIndex + " endIndex="
-					+ endIndex);
+			int size = socAssets.size();
 			Query q = pm
 					.newQuery("select from com.viraneel.apartmentspot.entities.Asset");
 			q.addExtension("datanucleus.query.evaluateInMemory", "true");
 			q.setCandidates(socAssets);
-			q.setRange(startIndex, endIndex);
-			q.setOrdering(paramOrderBy);
+			setQueryRangeAndOrder(req, q, size);
 			List<Asset> assets = (List<Asset>) q.execute();
 
 			jsonStr = getJSONString(assets);
@@ -1577,22 +1516,14 @@ public class MasterData extends BaseServlet {
 		if (null != userSessionProfile) {
 			Society soc = userSessionProfile.getCurrentSociety();
 			List<Building> socbuildings = soc.getBuildings();
-			int startIndex = Integer.parseInt(req.getParameter("jtStartIndex"));
-			int pageSize = Integer.parseInt(req.getParameter("jtPageSize"));
-			String paramOrderBy = req.getParameter("jtSorting");
+			int size = socbuildings.size();
 
-			int endIndex = startIndex + pageSize;
-			if (endIndex >= socbuildings.size()) {
-				endIndex = socbuildings.size();
-			}
-			System.out.println("StartIndex=" + startIndex + " endIndex="
-					+ endIndex);
 			Query q = pm
 					.newQuery("select from com.viraneel.apartmentspot.entities.Building");
 			q.addExtension("datanucleus.query.evaluateInMemory", "true");
 			q.setCandidates(socbuildings);
-			q.setRange(startIndex, endIndex);
-			q.setOrdering(paramOrderBy);
+			setQueryRangeAndOrder(req, q, size);
+
 			List<Building> buildings = (List<Building>) q.execute();
 
 			jsonStr = getJSONString(buildings);
