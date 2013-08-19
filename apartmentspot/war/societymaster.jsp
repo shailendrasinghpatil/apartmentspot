@@ -73,7 +73,7 @@ z-index:999;
 		
 		List<Section> userSections = userData.getAccessibleSections();
 		
-		String currentMainSection = "Society Information";
+		String currentMainSection = "Society Data";
 		List<Section> currentSubSectionList = null;
 		
 		for (Section userSection: userSections){
@@ -132,9 +132,11 @@ z-index:999;
 	   %>
 			$("#tabs").tabs({active :<%=active%>}).addClass("ui-tabs-vertical ui-helper-clearfix");
 			$("#tabs li").removeClass("ui-corner-top").addClass("ui-corner-left");
-		<%	for(int k=1; k <= j; k++){%>
-				$("#subtabs-<%=k%>").tabs(<%if(active.equals("" + (k-1))){%>{active :<%=subactive%>}<%}%>);				
-		<%	} %>		
+		<%	
+			if(null != request.getParameter("subactive")){
+			%>
+				$("#subtabs-<%=Long.parseLong(active)+1%>").tabs({active :<%=subactive%>});				
+		<%	}%>		
 			
 		});
 	</script>

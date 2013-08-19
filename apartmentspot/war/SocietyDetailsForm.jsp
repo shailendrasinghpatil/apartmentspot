@@ -10,6 +10,7 @@
 		return returnStr;
 	}%>
 <%
+System.out.println("society details called");
 	UserSessionProfile userSessProfile = (UserSessionProfile) session
 			.getAttribute("userSessionProfile");
 

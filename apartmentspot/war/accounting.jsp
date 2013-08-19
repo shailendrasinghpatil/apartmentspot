@@ -73,7 +73,7 @@ z-index:999;
 		
 		List<Section> userSections = userData.getAccessibleSections();
 		
-		String currentMainSection = "Accounting";
+		String currentMainSection = "Accounts";
 		List<Section> currentSubSectionList = null;
 		
 		for (Section userSection: userSections){
