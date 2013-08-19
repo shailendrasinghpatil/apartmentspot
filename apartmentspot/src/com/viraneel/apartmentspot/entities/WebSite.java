@@ -14,20 +14,20 @@ public class WebSite {
 	static{
 		sections.add(new Section(1,"Dashboard", "home.jsp",""));
 		
-		Section societyInfo = new Section(2, "Society Data", "masterdata.jsp", "");
+		Section societyInfo = new Section(2, "Society Data", "societymaster.jsp", "");
 		
 		List <Section> societySubSections = new ArrayList<Section>();
 		
-		Section societyRecords = new Section (21, "Society Records", "masterdata.jsp?active=0&subactive=0", "");
+		Section societyRecords = new Section (21, "Society Records", "societymaster.jsp?active=0&subactive=0", "");
 		
 		List <Section> societyRecordsSubSections = new ArrayList<Section>();
 		
-		Section societyDetails = new Section (211, "Society Details", "masterdata.jsp?active=0&subactive=0", "SocietyDetailsForm.jsp");
-		Section buildingDetails = new Section (212, "Building Details", "masterdata.jsp?active=0&subactive=1", "building.jsp");
-		Section aptDetails = new Section (213, "Apartment Details", "masterdata.jsp?active=0&subactive=2", "houses.jsp");		
-		Section facilityDetails = new Section (214, "Facility Details", "masterdata.jsp?active=0&subactive=3", "facilities.jsp");
-		Section assetDetails = new Section (215, "Asset Details", "masterdata.jsp?active=0&subactive=4", "assets.jsp");
-		Section rules = new Section (216, "Rules and Regulations", "masterdata.jsp?active=0&subactive=5","rules.jsp");
+		Section societyDetails = new Section (211, "Society Details", "societymaster.jsp?active=0&subactive=0", "SocietyDetailsForm.jsp");
+		Section buildingDetails = new Section (212, "Building Details", "societymaster.jsp?active=0&subactive=1", "building.jsp");
+		Section aptDetails = new Section (213, "Apartment Details", "societymaster.jsp?active=0&subactive=2", "houses.jsp");		
+		Section facilityDetails = new Section (214, "Facility Details", "societymaster.jsp?active=0&subactive=3", "facilities.jsp");
+		Section assetDetails = new Section (215, "Asset Details", "societymaster.jsp?active=0&subactive=4", "assets.jsp");
+		Section rules = new Section (216, "Rules and Regulations", "societymaster.jsp?active=0&subactive=5","rules.jsp");
 		
 		societyRecordsSubSections.add(societyDetails);
 		societyRecordsSubSections.add(buildingDetails);
@@ -39,24 +39,24 @@ public class WebSite {
 		societyRecords.setSubSections(societyRecordsSubSections);
 		
 		
-		Section residentRecords = new Section (22, "Resident Records", "masterdata.jsp?active=1&subactive=0","");
+		Section residentRecords = new Section (22, "Resident Records", "societymaster.jsp?active=1&subactive=0","");
 		
 		List<Section> residentSubSections = new ArrayList<Section>();		
 		
-		Section residents = new Section (221, "Residents", "masterdata.jsp?active=1&subactive=0","residents.jsp");
-		Section ownershipChanges = new Section (222, "Ownership Changes", "masterdata.jsp?active=1&subactive=1","ownership.jsp");
+		Section residents = new Section (221, "Residents", "societymaster.jsp?active=1&subactive=0","residents.jsp");
+		Section ownershipChanges = new Section (222, "Ownership Changes", "societymaster.jsp?active=1&subactive=1","ownership.jsp");
 		
 		residentSubSections.add(residents);
 		residentSubSections.add(ownershipChanges);
 		
 		residentRecords.setSubSections(residentSubSections);
 		
-		Section committee = new Section (231, "Groups", "masterdata.jsp?active=2", "committee.jsp");
-		Section vendors = new Section (241, "Vendors", "masterdata.jsp?active=3", "vendors.jsp");
-		Section docrepository = new Section (251, "Document Repository", "masterdata.jsp?active=", "documents.jsp");
-		Section alerts = new Section (261, "Define Alerts", "masterdata.jsp?active=5","alerts.jsp");
-		Section mailergroups = new Section (271, "Define Mailer Groups", "masterdata.jsp?active=5","mailergroups.jsp");
-		//Section billingheads = new Section (61, "Define Billing Heads", "masterdata.jsp?active=5","billingheads.jsp");
+		Section committee = new Section (231, "Groups", "societymaster.jsp?active=2", "committee.jsp");
+		Section vendors = new Section (241, "Vendors", "societymaster.jsp?active=3", "vendors.jsp");
+		Section docrepository = new Section (251, "Document Repository", "societymaster.jsp?active=4", "documents.jsp");
+		Section alerts = new Section (261, "Define Alerts", "societymaster.jsp?active=5","alerts.jsp");
+		Section mailergroups = new Section (271, "Define Mailer Groups", "societymaster.jsp?active=6","mailergroups.jsp");
+		//Section billingheads = new Section (61, "Define Billing Heads", "societymaster.jsp?active=5","billingheads.jsp");
 		
 		
 		societySubSections.add(societyRecords);

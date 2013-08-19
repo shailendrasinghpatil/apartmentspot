@@ -4,9 +4,7 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
-import java.util.Enumeration;
 import java.util.GregorianCalendar;
 import java.util.List;
 
@@ -16,25 +14,14 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
-import com.google.appengine.api.users.User;
-import com.google.appengine.api.users.UserService;
-import com.google.appengine.api.users.UserServiceFactory;
 import com.google.gson.Gson;
-
-import com.viraneel.apartmentspot.entities.BillingHeads;
 import com.viraneel.apartmentspot.entities.BillingHeadType;
-import com.viraneel.apartmentspot.entities.Receipt;
-import com.viraneel.apartmentspot.entities.Refund;
-import com.viraneel.apartmentspot.entities.Vendor;
-import com.viraneel.apartmentspot.entities.VendorType;
-import com.viraneel.apartmentspot.entities.Voucher;
 import com.viraneel.apartmentspot.entities.Expense;
 import com.viraneel.apartmentspot.entities.ExpenseType;
-
+import com.viraneel.apartmentspot.entities.Receipt;
+import com.viraneel.apartmentspot.entities.Refund;
 import com.viraneel.apartmentspot.entities.Society;
-import com.viraneel.apartmentspot.entities.Status;
-import com.viraneel.apartmentspot.entities.WebSite;
-import com.viraneel.apartmentspot.framework.persistence.PersistenceMgrFactory;
+import com.viraneel.apartmentspot.entities.Voucher;
 import com.viraneel.apartmentspot.valuebeans.UserSessionProfile;
 
 
