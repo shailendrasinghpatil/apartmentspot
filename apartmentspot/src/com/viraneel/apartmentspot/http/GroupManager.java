@@ -232,11 +232,13 @@ public class GroupManager extends BaseServlet {
 	}
 
 	private void deleteGroupDetails(HttpServletRequest req,
-			HttpServletResponse resp) {
+			HttpServletResponse resp) throws IOException {
 		Group group = (Group) pm.getObjectById(Group.class,
 				Long.parseLong(req.getParameter("groupID[id]")));
 		group.setEndDate(Calendar.getInstance().getTime());
 		pm.makePersistent(group);
+		String jsonStr = "{\"Result\":\"OK\"}";
+		resp.getWriter().print(jsonStr);
 
 	}
 
