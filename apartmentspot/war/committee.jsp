@@ -41,13 +41,28 @@ div#groups-contain table td,div#groups-contain table th {
                     $(this).empty();
                    // $(this).dialog('destroy');
                 },                
-                open: function (){              	
-                	$(this).load("managegroupmembers.jsp");
+                open: function (){
+                	var memberData = $(this).data('groupMemberData');
+                	$(this).load("managegroupmembers.jsp?groupID=" + memberData.record.groupID.id);
                 	//$(this).parent().appendTo("body");
                 },
     			buttons : {
     				"Save" : function() {
-    					$(this).dialog("close");
+    		           var $selectedRows = $('#groupmembers').jtable('selectedRows');
+    		            var records = new Array ();
+    		            $selectedRows.each(function () {
+    		                var record = $(this).data('record');    		                
+    		                records.push(record);
+    		            });
+    		            $.ajax({
+    		            	  type: "POST",
+    		            	  url: "group?userAction=Update_Resident_Details",
+    		            	  data: {'selectedRows': '{"Records" : ' + JSON.stringify(records) + "}"},
+    		            	  success: function (){
+    		            		  alert("success");
+    		            	  }
+
+    		            	});
     				},
     				"Cancel" : function() {
     					$(this).dialog("close");
@@ -124,9 +139,9 @@ div#groups-contain table td,div#groups-contain table th {
 									            sorting:false,
 									            toolbar: {
 									            	items:[{
-									            		text: 'Add /Remove Members',
+									            		text: 'Add Members',
 									            		click : function (){									            				
-									                            $( "#dialog4").dialog("open");				            			
+									                            $( "#dialog4").data('groupMemberData', memberData).dialog("open");				            			
 									            		}
 									            	}]
 									            },
@@ -162,7 +177,7 @@ div#groups-contain table td,div#groups-contain table th {
 									                	}							
 																								
 									            	},									            	
-									            	memberSince: {
+									            	sinceDate: {
 														list : true,
 														title : 'Member Since',
 									            		inputClass : 'text  ui-widget-content ui-corner-all inputClass'

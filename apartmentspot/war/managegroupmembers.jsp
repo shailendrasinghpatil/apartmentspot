@@ -30,7 +30,7 @@ div#groupmembers table td,div#groupmembers table th {
 		$('#groupmembers')
 				.jtable(
 						{
-							title : 'Members in Group',
+							title : 'Members in Society',
 							jqueryuiTheme : true,
 							selecting : true, //Enable selecting
 							multiselect : true, //Allow multiple selecting
@@ -59,7 +59,10 @@ div#groupmembers table td,div#groupmembers table th {
 									title : 'Name',
 									width : '15%'
 								},
-								memberRole : {
+	/*							memberRole : {
+									create : false,
+									edit : false,
+									list : true,
 									title : 'Role in Group',
 									width : '7%',
 									display : function(data) {
@@ -70,17 +73,29 @@ div#groupmembers table td,div#groupmembers table th {
 										return roleName;
 									}
 
-								},
-								memberSince : {
+								},*/
+								sinceDate : {
 									list : true,
 									title : 'Member Since',
 									inputClass : 'text  ui-widget-content ui-corner-all inputClass'
 								}
+							},
+							
+							recordsLoaded : function(event, data){								
+								
+										if(null != data.records){											
+											$.each(data.records, function(index, record){
+												if((null != record.sinceDate) && (null == record.toDate) ){
+												var row = $("#groupmembers").jtable('getRowByKey', record.memberID);
+													$("#groupmembers").jtable('selectRows',row);
+												}		
+											});
+										}
 							}
 
 						});
 		
-		$('#groupmembers').jtable('load');
+		$('#groupmembers').jtable('load', {userAction : 'Get_All_Resident_Details', groupID:'<%=request.getParameter("groupID")%>'});
 		
 		
 	});
