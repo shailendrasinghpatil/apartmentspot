@@ -168,7 +168,7 @@ div#groups-contain table td,div#groups-contain table th {
 														title : 'Name',
 														width : '15%'
 													},													
-													memberRole: {
+												/*	memberRole: {
 														title: 'Role in Group',
 														width : '7%',
 														display: function (data){
@@ -179,7 +179,7 @@ div#groups-contain table td,div#groups-contain table th {
 									                		return roleName;
 									                	}							
 																								
-									            	},									            	
+									            	},			*/						            	
 									            	sinceDate: {
 														list : true,
 														title : 'Member Since',
