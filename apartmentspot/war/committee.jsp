@@ -84,7 +84,7 @@ div#groups-contain table td,div#groups-contain table th {
 							pageSizes : [ 20, 50, 75, 100, 200, 500 ],
 							defaultSorting : 'groupID ASC',
 							deleteConfirmation : function(data) {
-								data.deleteConfirmMessage = 'Are you sure to delete record group '
+								data.deleteConfirmMessage = 'Are you sure to delete stop group '
 										+ data.record.groupName + '?';
 							},
 							sorting : true,
@@ -137,7 +137,7 @@ div#groups-contain table td,div#groups-contain table th {
 									            pageSizes:[5,10,20,50,100],
 									            defaultSorting: 'fullName ASC',
 									            deleteConfirmation: function(data) {
-									                data.deleteConfirmMessage = 'Are you sure to delete record group ' + data.record.fullName + '?';
+									                data.deleteConfirmMessage = 'Are you sure to delete  from group ' + data.record.fullName + '?';
 									            },	            
 									            sorting:false,
 									            toolbar: {
@@ -203,14 +203,19 @@ div#groups-contain table td,div#groups-contain table th {
 								groupDescription : {
 									title : 'Description',
 									width : '40%',
+									type : 'textarea',
 									inputClass : 'text  ui-widget-content ui-corner-all inputClass'
 								},
 								createdDate : {
+									create : false,
+									edit : false,										
 									title : 'Created On',
 									width : '15%',
 									inputClass : 'text  ui-widget-content ui-corner-all inputClass'
 								},
 								endDate : {
+									create : false,
+									edit : false,										
 									title : 'Stopped On',
 									width : '15%',
 									inputClass : 'text  ui-widget-content ui-corner-all inputClass'
