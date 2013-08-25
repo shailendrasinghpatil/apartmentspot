@@ -59,7 +59,10 @@ div#groups-contain table td,div#groups-contain table th {
     		            	  url: "group?userAction=Update_Resident_Details",
     		            	  data: {'selectedRows': '{"Records" : ' + JSON.stringify(records) + "}"},
     		            	  success: function (){
-    		            		  alert("success");
+    		            		 var ul = $( "#dialog4" ).data("ul");
+    		            		 ul.trigger('click');
+    		            		 $( "#dialog4" ).dialog("close");  		            		  
+    		            		  
     		            	  }
 
     		            	});
@@ -141,13 +144,13 @@ div#groups-contain table td,div#groups-contain table th {
 									            	items:[{
 									            		text: 'Add Members',
 									            		click : function (){									            				
-									                            $( "#dialog4").data('groupMemberData', memberData).dialog("open");				            			
+									                            $( "#dialog4").data('groupMemberData', memberData).data("ul", $ul).dialog("open");				            			
 									            		}
 									            	}]
 									            },
 									            actions: {
 									                listAction: 'group',
-									                deleteAction: 'group?userAction=Delete_Resident_Details'
+									                deleteAction: 'group?userAction=Delete_Resident_Details&groupID=' + memberData.record.groupID.id
 									            },
 									            fields: {
 									            	groupID :{
