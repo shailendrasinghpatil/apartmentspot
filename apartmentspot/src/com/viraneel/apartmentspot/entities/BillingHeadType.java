@@ -9,8 +9,8 @@ public class BillingHeadType extends BaseEntity{
 	@Persistent
 	private String billingHeadType;
 	
-	public BillingHeadType(String fcType){
-		setBillingHeadType(fcType);
+	public BillingHeadType(String billingType){
+		setBillingHeadType(billingType);
 	}
 
 	public String getBillingHeadType() {

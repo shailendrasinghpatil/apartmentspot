@@ -13,7 +13,6 @@ import com.google.appengine.api.datastore.Key;
 import com.google.appengine.datanucleus.annotations.Unowned;
 
 
-
 @PersistenceCapable
 public class Facility extends BaseEntity implements Comparable{
 

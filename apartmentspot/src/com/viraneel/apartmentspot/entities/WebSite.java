@@ -51,16 +51,15 @@ public class WebSite {
 		
 		residentRecords.setSubSections(residentSubSections);
 		
-		Section committee = new Section (231, "Groups", "societymaster.jsp?active=2", "committee.jsp");
-		Section vendors = new Section (241, "Vendors", "societymaster.jsp?active=3", "vendors.jsp");
-		Section docrepository = new Section (251, "Document Repository", "societymaster.jsp?active=4", "documents.jsp");
-		Section alerts = new Section (261, "Define Alerts", "societymaster.jsp?active=5","alerts.jsp");
-		Section mailergroups = new Section (271, "Define Mailer Groups", "societymaster.jsp?active=6","mailergroups.jsp");
+		Section committee = new Section (23, "Groups", "societymaster.jsp?active=2", "committee.jsp");
+		Section vendors = new Section (24, "Vendors", "societymaster.jsp?active=3", "vendors.jsp");
+		Section docrepository = new Section (25, "Document Repository", "societymaster.jsp?active=4", "documents.jsp");
+		Section alerts = new Section (26, "Define Alerts", "societymaster.jsp?active=5","alerts.jsp");
+		Section mailergroups = new Section (27, "Define Mailer Groups", "societymaster.jsp?active=6","mailergroups.jsp");
 		//Section billingheads = new Section (61, "Define Billing Heads", "societymaster.jsp?active=5","billingheads.jsp");
 		
 		
-		societySubSections.add(societyRecords);
-		societySubSections.add(residentRecords);
+		
 		societySubSections.add(committee);
 		societySubSections.add(vendors);
 		societySubSections.add(docrepository);
@@ -69,53 +68,55 @@ public class WebSite {
 		
 		societyInfo.setSubSections(societySubSections);
 		
+		societySubSections.add(societyRecords);
+		societySubSections.add(residentRecords);
 		
 		Section accounting = new Section(3, "Accounts", "accounting.jsp", "");
 		
 				List <Section> accountSubSections = new ArrayList<Section>();
 		
-					Section refunds = new Section (31, "Refunds", "accounting.jsp?active=0&subactive=0", "refunds.jsp");
-					Section receipts = new Section (32, "Receipts", "accounting.jsp?active=0&subactive=1", "receipts.jsp");
+					Section payments = new Section (31, "Payments", "accounting.jsp?active=0&subactive=0", "");
+					List <Section> paymentsSubSections = new ArrayList<Section>();
+					Section paymentVouchers = new Section (311, "Pettycash Payments and Vouchers", "accounting.jsp?active=0", "vouchers.jsp");
+					Section purchaseOrders = new Section (312, "Purchase Orders", "accounting.jsp?active=1", "purchaseorders.jsp");
+					Section expenses = new Section (313, "Expenses & Salaries", "accounting.jsp?active=2", "expenses.jsp");
+					Section bankdeposits = new Section (314, "Bank Deposits", "accounting.jsp?active=3", "bankdeposit.jsp");
 				
-					Section payments = new Section (33, "Payments", "accounting.jsp?active=0&subactive=2", "");
-						List <Section> paymentsSubSections = new ArrayList<Section>();
-							Section paymentVouchers = new Section (331, "Pettycash Payments and Vouchers", "accounting.jsp?active=0&subactive=0", "vouchers.jsp");
-							Section purchaseOrders = new Section (332, "Purchase Orders", "accounting.jsp?active=0&subactive=1", "purchaseorders.jsp");
-							Section expenses = new Section (333, "Expenses & Salaries", "accounting.jsp?active=0&subactive=2", "expenses.jsp");
-							Section bankdeposits = new Section (334, "Bank Deposits", "accounting.jsp?active=0&subactive=3", "bankdeposit.jsp");
+					paymentsSubSections.add(paymentVouchers);
+					paymentsSubSections.add(purchaseOrders);
+					paymentsSubSections.add(expenses);
+					paymentsSubSections.add(bankdeposits);
+				
+					payments.setSubSections(paymentsSubSections);
+					
+					Section refunds = new Section (32, "Refunds", "accounting.jsp?active=1", "refunds.jsp");
+					Section receipts = new Section (33, "Receipts", "accounting.jsp?active=2", "receipts.jsp");
+					Section vendorAMCs = new Section (34, "Input AMC records", "accounting.jsp?active=3","amcrecords.jsp");
+					
 						
-							paymentsSubSections.add(paymentVouchers);
-							paymentsSubSections.add(purchaseOrders);
-							paymentsSubSections.add(expenses);
-							paymentsSubSections.add(bankdeposits);
-						
-							payments.setSubSections(paymentsSubSections);
-						
-					Section reports = new Section (34, "Reports", "accounting.jsp?active=0&subactive=3", "");
+					Section reports = new Section (35, "Reports", "accounting.jsp?active=4&subactive=0", "");
 						List <Section> reportsSubSections = new ArrayList<Section>();
-							Section cashflowReport = new Section (341, "Cash Flow Report", "accounting.jsp?active=0&subactive=0", "cashflowreport.jsp");
-							Section tdsCollectionReport = new Section (342, "TDS Collection Report", "accounting.jsp?active=0&subactive=1", "tdscollection.jsp");
+							Section cashflowReport = new Section (351, "Cash Flow Report", "accounting.jsp?active=4&subactive=0", "cashflowreport.jsp");
+							Section tdsCollectionReport = new Section (352, "TDS Collection Report", "accounting.jsp?active=4&subactive=1", "tdscollection.jsp");
 							
 							reportsSubSections.add(cashflowReport);
 							reportsSubSections.add(tdsCollectionReport);
 								
 							reports.setSubSections(reportsSubSections);
 				
-					Section defineBillingHeads = new Section (35, "Define BillingHeads", "accounting.jsp?active=0&subactive=4", "");					
-					Section vendorAMCs = new Section (36, "Input AMC records", "accounting.jsp?active=0&subactive=5", "");
+					//Section defineBillingHeads = new Section (35, "Define BillingHeads", "accounting.jsp?active=0&subactive=4", "");					
 					
+				accountSubSections.add(payments);	
 				accountSubSections.add(refunds);
 				accountSubSections.add(receipts);
 				accountSubSections.add(vendorAMCs);
-				accountSubSections.add(payments);
 				accountSubSections.add(reports);
-				accountSubSections.add(defineBillingHeads);
+				//accountSubSections.add(defineBillingHeads);
 		
 		accounting.setSubSections(accountSubSections);
 		
 		sections.add(societyInfo);
 		sections.add(accounting);
-		
 		
 	}
 }
