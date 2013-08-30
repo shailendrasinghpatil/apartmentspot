@@ -22,6 +22,7 @@ import com.viraneel.apartmentspot.entities.Receipt;
 import com.viraneel.apartmentspot.entities.Refund;
 import com.viraneel.apartmentspot.entities.Society;
 import com.viraneel.apartmentspot.entities.Voucher;
+import com.viraneel.apartmentspot.entities.PurchaseOrder;
 import com.viraneel.apartmentspot.valuebeans.UserSessionProfile;
 
 
@@ -54,11 +55,27 @@ public class Accounting extends BaseServlet {
 			getReceiptDetails(req, resp);
 		} else if (userAction.equals("Delete_Receipt_Details")) {
 			deleteReceiptDetails(req, resp); 
-		} else if (userAction.equals("Get_BillingHead_Options")) {
-			getBillingHeadTypes(req, resp); 
 		} else if (userAction.equals("Get_Expense_Options")) {
 			getExpenseTypes(req, resp); 
-		} 
+		} else if (userAction.equalsIgnoreCase("Update_Voucher_Details")) {
+			processVoucherDetails(req, resp);
+		} else if (userAction.equals("Get_Voucher_Details")) {
+			getVoucherDetails(req, resp);
+		} else if (userAction.equals("Delete_Voucher_Details")) {
+			deleteVoucherDetails(req, resp); 
+		} else if (userAction.equalsIgnoreCase("Update_PurchaseOrder_Details")) {
+			processPurchaseOrderDetails(req, resp);
+		} else if (userAction.equals("Get_PurchaseOrder_Details")) {
+			getPurchaseOrderDetails(req, resp);
+		} else if (userAction.equals("Delete_PurchaseOrder_Details")) {
+			deletePurchaseOrderDetails(req, resp); 
+		} else if (userAction.equalsIgnoreCase("Update_Expense_Details")) {
+			processExpenseDetails(req, resp);
+		} else if (userAction.equals("Get_Expense_Details")) {
+			getExpenseDetails(req, resp);
+		} else if (userAction.equals("Delete_Expense_Details")) {
+			deleteExpenseDetails(req, resp); 
+		}	
 	}
 
 
@@ -261,6 +278,9 @@ public class Accounting extends BaseServlet {
 	private void deleteRefundDetails(HttpServletRequest req,
 			HttpServletResponse resp) throws IOException {
 		// TODO Auto-generated method stub
+		
+		System.out.println("delete refunds called");
+		
 		UserSessionProfile userSessionProfile = (UserSessionProfile) req
 				.getSession().getAttribute("userSessionProfile");
 		if (null != userSessionProfile) {
@@ -730,7 +750,7 @@ public class Accounting extends BaseServlet {
 		UserSessionProfile userSessionProfile = (UserSessionProfile) req
 				.getSession().getAttribute("userSessionProfile");
 		String jsonStr = "";
-		System.out.println("called");
+		System.out.println("get vouchers called");
 		
 		if (null != userSessionProfile) {
 			List<BillingHeadType> billingHeadTypes  = getBillingHeadType();
@@ -932,6 +952,197 @@ public class Accounting extends BaseServlet {
 			
 			pm.makePersistent(soc);
 			pm.deletePersistent(expense);
+			
+			System.out.println("Delete Successful");
+			Society refreshedSoc = pm.getObjectById(Society.class,
+					soc.getSocietyID());
+			userSessionProfile.setCurrentSociety(refreshedSoc);
+			req.getSession().setAttribute("userSessionProfile", userSessionProfile);
+			String jsonStr = "{\"Result\":\"OK\"}";
+			resp.getWriter().print(jsonStr);
+		}
+		
+	}
+	
+	private void getPurchaseOrderDetails(HttpServletRequest req,
+			HttpServletResponse resp) throws IOException{
+		// TODO Auto-generated method stub
+		
+		UserSessionProfile userSessionProfile = (UserSessionProfile) req
+				.getSession().getAttribute("userSessionProfile");
+		String jsonStr = "";
+		if (null != userSessionProfile) {
+			Society soc = userSessionProfile.getCurrentSociety();
+			List<PurchaseOrder> purchaseOrders = soc.getPurchaseOrder();
+			int size = purchaseOrders.size();
+
+			Query q = pm
+					.newQuery("select from com.viraneel.apartmentspot.entities.PurchaseOrder");
+			q.addExtension("datanucleus.query.evaluateInMemory", "true");
+			q.setCandidates(purchaseOrders);
+			setQueryRangeAndOrder(req, q, size);
+			List<PurchaseOrder> purchaseOrder = (List<PurchaseOrder>) q.execute();
+
+			jsonStr = getJSONString(purchaseOrder);
+			jsonStr = "{\"Result\":\"OK\",\"Records\":" + jsonStr
+					+ ", \"TotalRecordCount\":\"" + purchaseOrders.size() + "\"}";
+		}
+		resp.getWriter().print(jsonStr);
+	
+	}
+
+	private void processPurchaseOrderDetails(HttpServletRequest req,
+			HttpServletResponse resp) throws IOException {
+	
+		if (null == req.getParameter("purchaseOrderID")) {
+			PurchaseOrder purchaseOrder = new PurchaseOrder();
+			
+			purchaseOrder.setPurchaseOrderNumber(req.getParameter("purchaseOrderNumber"));
+			purchaseOrder.setPurchaseOrderDescription(req.getParameter("purchaseOrderDescription"));
+			purchaseOrder.setPurchaseOrderFor(req.getParameter("purchaseOrderFor"));
+			purchaseOrder.setPurchaseOrderAmount(req.getParameter("purchaseOrderAmount"));
+			
+			if (null != req.getParameter("purchaseOrderDate")) {
+				Calendar purchaseOrderDate = new GregorianCalendar();
+				try {
+					purchaseOrderDate.setTime(new SimpleDateFormat("yyyy-dd-MM").parse(req
+							.getParameter("purchaseOrderDate")));
+				} catch (ParseException e) {
+					e.printStackTrace();
+				}
+				purchaseOrder.setPurchaseOrderDate(purchaseOrderDate.getTime());
+			}
+			
+			if (null != req.getParameter("expenseType")) {
+
+				for (ExpenseType expenseType : getExpenseType()) {
+					if (expenseType.getExpenseType().equalsIgnoreCase(
+							req.getParameter("ExpenseType"))) {
+						purchaseOrder.setExpenseType(expenseType);
+						break;
+					}
+				}
+			}
+			
+						
+			
+			
+			pm.makePersistent(purchaseOrder);
+			
+			UserSessionProfile userSessionProfile = (UserSessionProfile) req
+					.getSession().getAttribute("userSessionProfile");
+			if (null != userSessionProfile) {
+				Society soc = userSessionProfile.getCurrentSociety();
+				List<PurchaseOrder> purchaseOrders = soc.getPurchaseOrder();
+				if (purchaseOrders == null) {
+					purchaseOrders = new ArrayList<PurchaseOrder>();
+				}
+				purchaseOrders.add(purchaseOrder);
+				soc.setPurchaseOrder(purchaseOrders);
+				pm.makePersistent(soc);
+
+				Society refreshedSoc = pm.getObjectById(Society.class,
+						soc.getSocietyID());
+				userSessionProfile.setCurrentSociety(refreshedSoc);
+				req.getSession().setAttribute("userSessionProfile", userSessionProfile);
+				String jsonStr = "{\"Result\":\"OK\",\"Record\":"
+						+ purchaseOrder.serializedJSON() + "}";
+				resp.getWriter().print(jsonStr);
+			}
+
+		} else {
+			UserSessionProfile userSessionProfile = (UserSessionProfile) req
+					.getSession().getAttribute("userSessionProfile");
+			if (null != userSessionProfile) {
+				Society soc = userSessionProfile.getCurrentSociety();
+				List<PurchaseOrder> purchaseOrders = soc.getPurchaseOrder();
+				for (PurchaseOrder purchaseOrder : purchaseOrders) {
+
+					Gson gson = new Gson();
+					System.out.println(req.getParameter("purchaseOrderID"));
+
+					long purchaseOrderID = Long.parseLong(req
+							.getParameter("purchaseOrderID"));
+					if (purchaseOrder.getPurchaseOrderID().getId() == purchaseOrderID) {
+						
+						purchaseOrder.setPurchaseOrderNumber(req.getParameter("purchaseOrderNumber"));
+						
+						purchaseOrder.setPurchaseOrderDescription(req.getParameter("purchaseOrderDescription"));
+						purchaseOrder.setPurchaseOrderFor(req.getParameter("purchaseOrderFor"));
+						purchaseOrder.setPurchaseOrderAmount(req.getParameter("purchaseOrderAmount"));
+						
+						if (null != req.getParameter("purchaseOrderDate")) {
+							Calendar purchaseOrderDate = new GregorianCalendar();
+							try {
+								purchaseOrderDate.setTime(new SimpleDateFormat("yyyy-dd-MM").parse(req
+										.getParameter("purchaseOrderDate")));
+							} catch (ParseException e) {
+								e.printStackTrace();
+							}
+							purchaseOrder.setPurchaseOrderDate(purchaseOrderDate.getTime());
+						}
+						
+						if (null != req.getParameter("purchaseOrderType")) {
+
+							for (ExpenseType expenseType : getExpenseType()) {
+								if (expenseType.getExpenseType().equalsIgnoreCase(
+										req.getParameter("expenseType"))) {
+									purchaseOrder.setExpenseType(expenseType);
+									break;
+								}
+							}
+
+						}
+						
+						
+											
+						pm.makePersistent(purchaseOrder);
+						
+						Society refreshedSoc = pm.getObjectById(Society.class,
+								soc.getSocietyID());
+						userSessionProfile.setCurrentSociety(refreshedSoc);
+						req.getSession().setAttribute("userSessionProfile", userSessionProfile);
+						String jsonStr = "{\"Result\":\"OK\",\"Record\":"
+								+ purchaseOrder.serializedJSON() + "}";
+						resp.getWriter().print(jsonStr);
+						break;
+					}
+				}
+			}
+
+		}
+	
+	}
+
+	
+	private void deletePurchaseOrderDetails(HttpServletRequest req,
+			HttpServletResponse resp) throws IOException {
+		// TODO Auto-generated method stub
+		UserSessionProfile userSessionProfile = (UserSessionProfile) req
+				.getSession().getAttribute("userSessionProfile");
+		if (null != userSessionProfile) {
+			Society soc = userSessionProfile.getCurrentSociety();
+			List<PurchaseOrder> purchaseOrders = soc.getPurchaseOrder();
+
+			Gson gson = new Gson();
+			System.out.println(req.getParameter("assetID[id]"));
+
+			long purchaseOrderID = Long.parseLong(req.getParameter("purchaseOrderID[id]"));
+			Key purchaseOrderKey = KeyFactory.createKey(PurchaseOrder.class.getSimpleName(),
+					purchaseOrderID);
+			PurchaseOrder purchaseOrder = pm.getObjectById(PurchaseOrder.class, purchaseOrderKey);
+			
+			if(purchaseOrders != null){
+				purchaseOrders.remove(purchaseOrder);
+			}
+			
+			Query q = pm.newQuery(PurchaseOrder.class);
+			q.setFilter("purchaseOrderID == purchaseOrderIDParam");
+			q.declareParameters(Key.class.getName() + " purchaseOrderIDParam");
+			q.deletePersistentAll(purchaseOrderKey);
+			
+			pm.makePersistent(soc);
+			pm.deletePersistent(purchaseOrder);
 			
 			System.out.println("Delete Successful");
 			Society refreshedSoc = pm.getObjectById(Society.class,
