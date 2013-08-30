@@ -14,7 +14,7 @@ import com.google.appengine.api.datastore.Key;
 import com.google.appengine.datanucleus.annotations.Unowned;
 
 @PersistenceCapable
-public class Receipt extends BaseEntity {
+public class Receipt extends BaseEntity implements Comparable {
 
 	private static DateFormat df = new SimpleDateFormat("yyyy-dd-MM");
 	
@@ -124,5 +124,11 @@ public class Receipt extends BaseEntity {
 		this.billingHeadType = billingHeadType;
 	}
 	
+	@Override
+	public int compareTo(Object o) {
+		Receipt b = (Receipt) o;
+		int returnval = this.receiptID.compareTo(b.receiptID);
+		return returnval;
+	}
 	
 }

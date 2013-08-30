@@ -14,7 +14,7 @@ import com.google.appengine.api.datastore.Key;
 import com.google.appengine.datanucleus.annotations.Unowned;
 
 @PersistenceCapable
-public class Voucher extends BaseEntity {
+public class Voucher extends BaseEntity implements Comparable {
 
 	private static DateFormat df = new SimpleDateFormat("yyyy-dd-MM");
 	
@@ -62,12 +62,9 @@ public class Voucher extends BaseEntity {
 		this.voucherNumber = voucherNumber;
 	}
 
-
-
 	public String getVoucherAmount() {
 		return voucherAmount;
 	}
-
 
 	public void setVoucherAmount(String voucherAmount) {
 		this.voucherAmount = voucherAmount;
@@ -86,25 +83,17 @@ public class Voucher extends BaseEntity {
 		return voucherDescription;
 	}
 
-
-
 	public void setVoucherDescription(String voucherDescription) {
 		this.voucherDescription = voucherDescription;
 	}
-
-	
 
 	public String getVoucherFor() {
 		return voucherFor;
 	}
 
-
-
 	public void setVoucherFor(String voucherFor) {
 		this.voucherFor = voucherFor;
 	}
-
-
 
 	@Persistent
 	@Unowned
@@ -120,6 +109,11 @@ public class Voucher extends BaseEntity {
 		this.expenseType = expenseType;
 	}
 
-
+	@Override
+	public int compareTo(Object o) {
+		Voucher b = (Voucher) o;
+		int returnval = this.voucherID.compareTo(b.voucherID);
+		return returnval;
+	}
 	
 }

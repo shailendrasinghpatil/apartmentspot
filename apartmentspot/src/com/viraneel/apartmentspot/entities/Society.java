@@ -313,9 +313,6 @@ public class Society extends BaseEntity {
 		this.receipt = receipt;
 	}
 	
-
-	
-	
 	@Persistent
 	@Unowned
 	private List<Voucher> voucher;
@@ -341,6 +338,17 @@ public class Society extends BaseEntity {
 		this.expense = expense;
 	}
 	
+	@Persistent
+	@Unowned
+	private List<PurchaseOrder> purchaseOrder;
 	
+
+	public List<PurchaseOrder> getPurchaseOrder() {
+		return purchaseOrder;
+	}
+
+	public void setPurchaseOrder(List<PurchaseOrder> purchaseOrder) {
+		this.purchaseOrder = purchaseOrder;
+	}
 	
 }
