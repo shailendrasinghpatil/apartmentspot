@@ -614,9 +614,6 @@ public class Accounting extends BaseServlet {
 				}
 			}
 			
-						
-			voucher.setVoucherAmount(req.getParameter("voucherAmount"));
-			
 			pm.makePersistent(voucher);
 			
 			UserSessionProfile userSessionProfile = (UserSessionProfile) req
@@ -672,7 +669,7 @@ public class Accounting extends BaseServlet {
 							voucher.setVoucherDate(voucherDate.getTime());
 						}
 						
-						if (null != req.getParameter("voucherType")) {
+						if (null != req.getParameter("expenseType")) {
 
 							for (ExpenseType expenseType : getExpenseType()) {
 								if (expenseType.getExpenseType().equalsIgnoreCase(
@@ -831,8 +828,6 @@ public class Accounting extends BaseServlet {
 			}
 			
 						
-			expense.setExpenseAmount(req.getParameter("expenseAmount"));
-			
 			pm.makePersistent(expense);
 			
 			UserSessionProfile userSessionProfile = (UserSessionProfile) req
@@ -903,8 +898,6 @@ public class Accounting extends BaseServlet {
 
 						}
 						
-						
-											
 						pm.makePersistent(expense);
 						
 						Society refreshedSoc = pm.getObjectById(Society.class,
@@ -1024,9 +1017,6 @@ public class Accounting extends BaseServlet {
 				}
 			}
 			
-						
-			
-			
 			pm.makePersistent(purchaseOrder);
 			
 			UserSessionProfile userSessionProfile = (UserSessionProfile) req
@@ -1082,7 +1072,7 @@ public class Accounting extends BaseServlet {
 							purchaseOrder.setPurchaseOrderDate(purchaseOrderDate.getTime());
 						}
 						
-						if (null != req.getParameter("purchaseOrderType")) {
+						if (null != req.getParameter("expenseType")) {
 
 							for (ExpenseType expenseType : getExpenseType()) {
 								if (expenseType.getExpenseType().equalsIgnoreCase(
@@ -1093,9 +1083,7 @@ public class Accounting extends BaseServlet {
 							}
 
 						}
-						
-						
-											
+	
 						pm.makePersistent(purchaseOrder);
 						
 						Society refreshedSoc = pm.getObjectById(Society.class,
