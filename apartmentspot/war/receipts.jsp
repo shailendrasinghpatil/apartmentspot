@@ -34,7 +34,7 @@ div#receipts-contain table td,div#receipts-contain table th {
 							pageSizes : [ 2, 5, 10, 15, 20, 25 ],
 							defaultSorting : 'receiptID ASC',
 							deleteConfirmation : function(data) {
-								data.deleteConfirmMessage = 'Are you sure you want to delete the Receipt record  '
+								data.deleteConfirmMessage = 'Are you sure you want to delete the Receipt record'
 										+ data.record.receiptNumber + '?';
 
 							},
@@ -70,16 +70,16 @@ div#receipts-contain table td,div#receipts-contain table th {
 									list : false
 								},
 								receiptNumber : {
-									title : 'Number',
+									title : 'Receipt <br/>Number',
 									width : '10%',
 									inputClass : 'text  ui-widget-content ui-corner-all inputClass',
 								},
 								receiptDate : {
-									title : 'Date',
+									title : 'Receipt<br/>Date',
 									width : '15%',
 									inputClass : 'text  ui-widget-content ui-corner-all inputClass',
 									type : 'date',
-									displayFormat : 'mm-dd-yy'
+									displayFormat : 'yy-mm-dd'
 								},
 								receiptTo : {
 									title : 'Receipient',
@@ -100,17 +100,16 @@ div#receipts-contain table td,div#receipts-contain table th {
 									title: 'Towards',
 				                	width: '7%',
 				                	display: function (data){
-				                		return data.record.billingHeadType.billingHeadType;
-				                	},
+				                		var receiptType = "";
+		                					if(data.record.billingHeadType != null){
+		                						receiptType = data.record.billingHeadType.billingHeadType;
+		                					}
+		                				return receiptType;
+				                		},		
 				                	options:'accounting?userAction=Get_BillingHead_Options',
 				                	inputClass: 'text  ui-widget-content ui-corner-all inputClass'
-				                	},
+				                	}
 								
-								totalreceipts : {
-									title : 'Total <br/> Receipts',
-									width : '8%',
-									inputClass : 'text  ui-widget-content ui-corner-all inputClass',
-								}
 							}
 						});
 		$('#receipts-contain').jtable('load', {

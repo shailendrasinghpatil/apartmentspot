@@ -99,8 +99,13 @@ div#refunds-contain table td,div#refunds-contain table th {
 									title: 'Towards',
 				                	width: '15%',
 				                	display: function (data){
-				                		return data.record.billingheadtype.billingheadtype;
-				                	},
+				                		var refundType = "";
+		                					if(data.record.billingHeadType != null){
+		                						refundType = data.record.billingHeadType.billingHeadType;
+		                					}
+		                				return refundType;
+				                		},					    
+				                		
 				                	options:'accounting?userAction=Get_BillingHead_Options',
 				                	inputClass: 'text  ui-widget-content ui-corner-all inputClass'
 				                	},
@@ -109,12 +114,7 @@ div#refunds-contain table td,div#refunds-contain table th {
 									width : '15%',
 									inputClass : 'text  ui-widget-content ui-corner-all inputClass',
 									type : 'date',
-									displayFormat : 'dd-mm-yy'
-								},
-								totalrefunds : {
-									title : 'Total <br/> Refunds',
-									width : '8%',
-									inputClass : 'text  ui-widget-content ui-corner-all inputClass',
+									displayFormat : 'yy-mm-dd'
 								}
 							}
 						});

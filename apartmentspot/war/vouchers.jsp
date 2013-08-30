@@ -70,13 +70,20 @@ div#vouchers-contain table td,div#vouchers-contain table th {
 									list : false
 								},
 								voucherNumber : {
-									title : 'Number',
+									title : 'Voucher<br/>Number',
 									width : '10%',
 									inputClass : 'text  ui-widget-content ui-corner-all inputClass',
 								},
+								voucherDate : {
+									title : 'Date',
+									width : '10%',
+									inputClass : 'text  ui-widget-content ui-corner-all inputClass',
+									type : 'date',
+									displayFormat : 'dd-mm-yy'
+								},
 								voucherFor : {
-									title : 'Recepient',
-									width : '20%',
+									title : 'Paid To',
+									width : '15%',
 									inputClass : 'text  ui-widget-content ui-corner-all inputClass',
 								},
 								voucherAmount : {
@@ -84,30 +91,22 @@ div#vouchers-contain table td,div#vouchers-contain table th {
 									width : '7%',
 									inputClass : 'text  ui-widget-content ui-corner-all inputClass',
 								},
+								expenseType : {
+									title: 'Category',
+				                	width: '10%',
+				                	display: function (data){
+				                		var expenseType = "";
+		                					if(data.record.expenseType != null){
+		                						expenseType = data.record.expenseType.expenseType;
+		                					}
+		                				return expenseType;
+				                		},					                	
+		                	     		options:'accounting?userAction=Get_Expense_Options',
+				                		inputClass: 'text  ui-widget-content ui-corner-all inputClass'
+				                	},
 								voucherDescription : {
 									title : 'Details',
-									width : '7%',
-									inputClass : 'text  ui-widget-content ui-corner-all inputClass',
-								},
-								voucherType : {
-									title: 'Towards',
-				                	width: '7%',
-				                	display: function (data){
-				                		return data.record.voucherType.voucherType;
-				                	},
-				                	options:'accounting?userAction=Get_Voucher_Options',
-				                	inputClass: 'text  ui-widget-content ui-corner-all inputClass'
-				                	},
-								voucherDate : {
-									title : 'Date',
-									width : '15%',
-									inputClass : 'text  ui-widget-content ui-corner-all inputClass',
-									type : 'date',
-									displayFormat : 'dd-mm-yy'
-								},
-								totalvouchers : {
-									title : 'Total <br/> Vouchers',
-									width : '8%',
+									width : '10%',
 									inputClass : 'text  ui-widget-content ui-corner-all inputClass',
 								}
 							}

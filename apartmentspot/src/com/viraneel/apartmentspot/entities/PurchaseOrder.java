@@ -37,7 +37,8 @@ public class PurchaseOrder extends BaseEntity {
 	@Persistent
 	private String purchaseOrderVendor;
 	
-	
+	@Persistent
+	private String purchaseOrderFor;
 	
 
 	public Key getPurchaseOrderID() {
@@ -48,6 +49,18 @@ public class PurchaseOrder extends BaseEntity {
 
 	public void setPurchaseOrderID(Key purchaseOrderID) {
 		this.purchaseOrderID = purchaseOrderID;
+	}
+
+
+
+	public String getPurchaseOrderFor() {
+		return purchaseOrderFor;
+	}
+
+
+
+	public void setPurchaseOrderFor(String purchaseOrderFor) {
+		this.purchaseOrderFor = purchaseOrderFor;
 	}
 
 

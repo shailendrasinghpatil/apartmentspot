@@ -70,20 +70,20 @@ div#expenses-contain table td,div#expenses-contain table th {
 									list : false
 								},
 								expenseNumber : {
-									title : 'Number',
+									title : 'Expense <br/>Number',
 									width : '10%',
 									inputClass : 'text  ui-widget-content ui-corner-all inputClass',
 								},
 								expenseDate : {
 									title : 'Date',
-									width : '15%',
+									width : '10%',
 									inputClass : 'text  ui-widget-content ui-corner-all inputClass',
 									type : 'date',
 									displayFormat : 'dd-mm-yy'
 								},
 								expenseFor : {
-									title : 'Recepient',
-									width : '20%',
+									title : 'Payee',
+									width : '15%',
 									inputClass : 'text  ui-widget-content ui-corner-all inputClass',
 								},
 								expenseAmount : {
@@ -91,27 +91,23 @@ div#expenses-contain table td,div#expenses-contain table th {
 									width : '7%',
 									inputClass : 'text  ui-widget-content ui-corner-all inputClass',
 								},
-								expenseDescription : {
-									title : 'Details',
-									width : '7%',
-									inputClass : 'text  ui-widget-content ui-corner-all inputClass',
-								},
 								expenseType : {
-									title: 'Towards',
-				                	width: '7%',
-				                	display: function (data){
-				                		return data.record.expenseType.expenseType;
-				                	},
+									title: 'Category',
+				                	width: '10%',
+				                	
+					                	display: function (data){
+					                	var expenseType = "";
+			                				if(data.record.expenseType != null){
+			                					expenseType = data.record.expenseType.expenseType;
+			                				}
+			                			return expenseType;
+			                			},						
+				
 				                	options:'accounting?userAction=Get_Expense_Options',
 				                	inputClass: 'text  ui-widget-content ui-corner-all inputClass'
 				                	},
-								expenseDescription : {
-									title : 'Details',
-									width : '7%',
-									inputClass : 'text  ui-widget-content ui-corner-all inputClass',
-								},
-								TDSdeducted : {
-									title : 'TDS Deducted',
+		     					TDSdeducted : {
+									title : 'TDS',
 									width : '7%',
 									inputClass : 'text  ui-widget-content ui-corner-all inputClass',
 								},
@@ -125,11 +121,12 @@ div#expenses-contain table td,div#expenses-contain table th {
 									width : '7%',
 									inputClass : 'text  ui-widget-content ui-corner-all inputClass',
 								},
-								totalexpenses : {
-									title : 'Total <br/> Expenses',
-									width : '8%',
+								expenseDescription : {
+									title : 'Details',
+									width : '15%',
 									inputClass : 'text  ui-widget-content ui-corner-all inputClass',
 								}
+								
 							}
 						});
 		$('#expenses-contain').jtable('load', {
