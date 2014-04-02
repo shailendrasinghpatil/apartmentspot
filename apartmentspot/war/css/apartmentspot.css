@@ -1,37 +1,37 @@
 body {
-	font-family: "Arial Unicode MS", "Helvetica Rounded", Arial,
-		sans-serif;;
+	font-family: ARIAL UNICODE MS, mangal, raghu8;
 	font-size: 65%;
 }
-#headerbar{
+
+#headerbar {
 	position: absolute;
 	top: 0px;
 	left: 0px;
 	/*background: url('/images/logobg.jpg') right center repeat;*/
-	height:60px;
-	vertical-align:center;
-	width:100%;
+	height: 60px;
+	vertical-align: center;
+	width: 100%;
 }
 
-
-#theme{
+#theme {
 	position: relative;
 	top: 0px;
 	float: right;
 	height: 15px;
-	padding: 0.1em;	
-	width:380px;
-	
+	padding: 0.1em;
+	width: 380px;
 }
-.logo{
+
+.logo {
 	font-size: 24px;
-	font-weight:bold;
+	font-weight: bold;
 	float: left;
 	line-height: 50px;
 	margin: 0;
 	padding-left: 7px;
-	margin:1 1px 1 1px;
+	margin: 1 1px 1 1px;
 }
+
 .welcome {
 	position: absolute;
 	top: 5px;
@@ -50,12 +50,12 @@ body {
 }
 
 .menubarcontainer {
-	display:block;
+	display: block;
 	position: relative;
 	top: 35px;
 	left: 260px;
 	z-index: 1;
-	max-width:856px;
+	max-width: 856px;
 }
 
 .ui-menubar {
@@ -67,8 +67,6 @@ body {
 .ui-menubar-item {
 	float: left;
 }
-
-
 
 .ui-menubar .ui-button {
 	float: left;
@@ -91,3 +89,45 @@ body {
 	font-weight: normal;
 }
 
+.ui-widget {
+	font-family: ARIAL UNICODE MS, mangal, raghu8;;
+	font-size: 1.1em;
+}
+
+.ui-widget .ui-widget {
+	font-size: 1em;
+}
+
+.ui-widget input,.ui-widget select,.ui-widget textarea,.ui-widget button
+	{
+	font-family: ARIAL UNICODE MS, mangal, raghu8;
+	font-size: 1em;
+}
+
+.text  .ui-widget-content .ui-corner-all .inputClass {
+	font-family: ARIAL UNICODE MS, mangal, raghu8;
+	font-size: 1em;
+}
+/*
+.ui-widget-content {
+	border: 1px solid #a6c9e2;
+	background: #fcfdfd url(images/ui-bg_inset-hard_100_fcfdfd_1x100.png)
+		50% bottom repeat-x;
+	color: #222222;
+}
+
+.ui-widget-content a {
+	color: #222222;
+}
+
+.ui-widget-header {
+	border: 1px solid #4297d7;
+	background: #2191c0 url(images/ui-bg_highlight-hard_75_2191c0_1x100.png)
+		50% 50% repeat-x;
+	color: #eaf5f7;
+	font-weight: bold;
+}
+
+.ui-widget-header a {
+	color: #eaf5f7;
+}*/

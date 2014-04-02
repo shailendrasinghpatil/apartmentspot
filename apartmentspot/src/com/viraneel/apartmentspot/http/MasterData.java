@@ -1,6 +1,7 @@
 package com.viraneel.apartmentspot.http;
 
 import java.io.IOException;
+import java.net.URLDecoder;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -20,9 +21,10 @@ import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 import com.google.gson.Gson;
-
 import com.viraneel.apartmentspot.entities.Asset;
 import com.viraneel.apartmentspot.entities.Building;
+import com.viraneel.apartmentspot.entities.Facility;
+import com.viraneel.apartmentspot.entities.FacilityType;
 import com.viraneel.apartmentspot.entities.House;
 import com.viraneel.apartmentspot.entities.HouseType;
 import com.viraneel.apartmentspot.entities.Member;
@@ -32,12 +34,10 @@ import com.viraneel.apartmentspot.entities.Role;
 import com.viraneel.apartmentspot.entities.Society;
 import com.viraneel.apartmentspot.entities.SocietyMemberRole;
 import com.viraneel.apartmentspot.entities.Status;
+import com.viraneel.apartmentspot.entities.Vendor;
+import com.viraneel.apartmentspot.entities.VendorType;
 import com.viraneel.apartmentspot.valuebeans.MemberHouseDetail;
 import com.viraneel.apartmentspot.valuebeans.UserSessionProfile;
-import com.viraneel.apartmentspot.entities.FacilityType;
-import com.viraneel.apartmentspot.entities.Facility;
-import com.viraneel.apartmentspot.entities.VendorType;
-import com.viraneel.apartmentspot.entities.Vendor;
 
 @SuppressWarnings("serial")
 public class MasterData extends BaseServlet {
@@ -130,7 +130,7 @@ public class MasterData extends BaseServlet {
 			jsonStr = "{\"Result\":\"OK\",\"Records\":" + jsonStr
 					+ ", \"TotalRecordCount\":\"" + socfacilities.size() + "\"}";
 		}
-		resp.getWriter().print(jsonStr);
+		sendJSONResponse(resp, jsonStr);
 	
 	}
 
@@ -176,7 +176,7 @@ public class MasterData extends BaseServlet {
 				req.getSession().setAttribute("userSessionProfile", userSessionProfile);
 				String jsonStr = "{\"Result\":\"OK\",\"Record\":"
 						+ facility.serializedJSON() + "}";
-				resp.getWriter().print(jsonStr);
+				sendJSONResponse(resp, jsonStr);
 			}
 
 		} else {
@@ -218,7 +218,7 @@ public class MasterData extends BaseServlet {
 						req.getSession().setAttribute("userSessionProfile", userSessionProfile);
 						String jsonStr = "{\"Result\":\"OK\",\"Record\":"
 								+ facility.serializedJSON() + "}";
-						resp.getWriter().print(jsonStr);
+						sendJSONResponse(resp, jsonStr);
 						break;
 					}
 				}
@@ -264,7 +264,7 @@ public class MasterData extends BaseServlet {
 			userSessionProfile.setCurrentSociety(refreshedSoc);
 			req.getSession().setAttribute("userSessionProfile", userSessionProfile);
 			String jsonStr = "{\"Result\":\"OK\"}";
-			resp.getWriter().print(jsonStr);
+			sendJSONResponse(resp, jsonStr);
 		}
 		
 	}
@@ -288,7 +288,7 @@ public class MasterData extends BaseServlet {
 			jsonStr = jsonStr.substring(0, jsonStr.length() - 1) + "]}";
 
 			System.out.println(jsonStr);
-			resp.getWriter().print(jsonStr);
+			sendJSONResponse(resp, jsonStr);
 		}
 	}
 
@@ -315,7 +315,7 @@ public class MasterData extends BaseServlet {
 			jsonStr = "{\"Result\":\"OK\",\"Records\":" + jsonStr
 					+ ", \"TotalRecordCount\":\"" + socvendors.size() + "\"}";
 		}
-		resp.getWriter().print(jsonStr);
+		sendJSONResponse(resp, jsonStr);
 	
 	}
 
@@ -366,7 +366,7 @@ public class MasterData extends BaseServlet {
 				req.getSession().setAttribute("userSessionProfile", userSessionProfile);
 				String jsonStr = "{\"Result\":\"OK\",\"Record\":"
 						+ vendor.serializedJSON() + "}";
-				resp.getWriter().print(jsonStr);
+				sendJSONResponse(resp, jsonStr);
 			}
 
 		} else {
@@ -411,7 +411,7 @@ public class MasterData extends BaseServlet {
 						req.getSession().setAttribute("userSessionProfile", userSessionProfile);
 						String jsonStr = "{\"Result\":\"OK\",\"Record\":"
 								+ vendor.serializedJSON() + "}";
-						resp.getWriter().print(jsonStr);
+						sendJSONResponse(resp, jsonStr);
 						break;
 					}
 				}
@@ -457,7 +457,7 @@ public class MasterData extends BaseServlet {
 			userSessionProfile.setCurrentSociety(refreshedSoc);
 			req.getSession().setAttribute("userSessionProfile", userSessionProfile);
 			String jsonStr = "{\"Result\":\"OK\"}";
-			resp.getWriter().print(jsonStr);
+			sendJSONResponse(resp, jsonStr);
 		}
 		
 	}
@@ -481,11 +481,10 @@ public class MasterData extends BaseServlet {
 			jsonStr = jsonStr.substring(0, jsonStr.length() - 1) + "]}";
 
 			System.out.println(jsonStr);
-			resp.getWriter().print(jsonStr);
+			sendJSONResponse(resp, jsonStr);
 		}
 	}
 
-	
 	private void getHouseTypes(HttpServletRequest req, HttpServletResponse resp)
 			throws IOException {
 		UserSessionProfile userSessionProfile = (UserSessionProfile) req
@@ -504,7 +503,7 @@ public class MasterData extends BaseServlet {
 			jsonStr = jsonStr.substring(0, jsonStr.length() - 1) + "]}";
 
 			System.out.println(jsonStr);
-			resp.getWriter().print(jsonStr);
+			sendJSONResponse(resp, jsonStr);
 		}
 	}
 
@@ -521,7 +520,7 @@ public class MasterData extends BaseServlet {
 
 		jsonStr = jsonStr.substring(0, jsonStr.length() - 1) + "]}";
 		System.out.println(jsonStr);
-		resp.getWriter().print(jsonStr);
+		sendJSONResponse(resp, jsonStr);
 
 	}
 	
@@ -582,7 +581,7 @@ public class MasterData extends BaseServlet {
 				req.getSession().setAttribute("userSessionProfile", userSessionProfile);
 				String jsonStr = "{\"Result\":\"OK\",\"Record\":"
 						+ assets.serializedJSON() + "}";
-				resp.getWriter().print(jsonStr);
+				sendJSONResponse(resp, jsonStr);
 			}
 
 		} else {
@@ -638,7 +637,7 @@ public class MasterData extends BaseServlet {
 						req.getSession().setAttribute("userSessionProfile", userSessionProfile);
 						String jsonStr = "{\"Result\":\"OK\",\"Record\":"
 								+ asset.serializedJSON() + "}";
-						resp.getWriter().print(jsonStr);
+						sendJSONResponse(resp, jsonStr);
 						break;
 					}
 				}
@@ -681,7 +680,7 @@ public class MasterData extends BaseServlet {
 			userSessionProfile.setCurrentSociety(refreshedSoc);
 			req.getSession().setAttribute("userSessionProfile", userSessionProfile);
 			String jsonStr = "{\"Result\":\"OK\"}";
-			resp.getWriter().print(jsonStr);
+			sendJSONResponse(resp, jsonStr);
 		}
 	}
 
@@ -761,7 +760,7 @@ public class MasterData extends BaseServlet {
 			userSessionProfile.setCurrentSociety(refreshedSoc);
 			req.getSession().setAttribute("userSessionProfile", userSessionProfile);
 			System.out.println(jsonStr);
-			resp.getWriter().print(jsonStr);
+			sendJSONResponse(resp, jsonStr);
 
 		}
 
@@ -834,7 +833,7 @@ public class MasterData extends BaseServlet {
 				if (memberHouseList.isEmpty()) {
 					jsonStr = "{\"Result\":\"OK\",\"Records\":[]"
 							+ ", \"TotalRecordCount\":\"0" + "\"}";
-					resp.getWriter().print(jsonStr);
+					sendJSONResponse(resp, jsonStr);
 					return;
 				}
 
@@ -881,7 +880,7 @@ public class MasterData extends BaseServlet {
 			System.out.println(jsonStr);
 
 		}
-		resp.getWriter().print(jsonStr);
+		sendJSONResponse(resp, jsonStr);
 
 	}
 
@@ -932,7 +931,7 @@ public class MasterData extends BaseServlet {
 
 		jsonStr = jsonStr.substring(0, jsonStr.length() - 1) + "]}";
 		System.out.println(jsonStr);
-		resp.getWriter().print(jsonStr);
+		sendJSONResponse(resp, jsonStr);
 	}
 
 	private SocietyMemberRole getMemberRoleinSociety(Society soc, Member member) {
@@ -972,7 +971,7 @@ public class MasterData extends BaseServlet {
 			jsonStr = jsonStr.substring(0, jsonStr.length() - 1) + "]}";
 
 			System.out.println(jsonStr);
-			resp.getWriter().print(jsonStr);
+			sendJSONResponse(resp, jsonStr);
 		}
 	}
 
@@ -1014,7 +1013,7 @@ public class MasterData extends BaseServlet {
 			userSessionProfile.setCurrentSociety(refreshedSoc);
 			req.getSession().setAttribute("userSessionProfile", userSessionProfile);
 			String jsonStr = "{\"Result\":\"OK\"}";
-			resp.getWriter().print(jsonStr);
+			sendJSONResponse(resp, jsonStr);
 		}
 	}
 
@@ -1043,7 +1042,7 @@ public class MasterData extends BaseServlet {
 				if (memberHouseList.isEmpty()) {
 					jsonStr = "{\"Result\":\"OK\",\"Records\":[]"
 							+ ", \"TotalRecordCount\":\"0" + "\"}";
-					resp.getWriter().print(jsonStr);
+					sendJSONResponse(resp, jsonStr);
 					return;
 				}
 
@@ -1098,7 +1097,7 @@ public class MasterData extends BaseServlet {
 			}
 
 		}
-		resp.getWriter().print(jsonStr);
+		sendJSONResponse(resp, jsonStr);
 
 	}
 
@@ -1214,7 +1213,7 @@ public class MasterData extends BaseServlet {
 			userSessionProfile.setCurrentSociety(refreshedSoc);
 			req.getSession().setAttribute("userSessionProfile", userSessionProfile);
 			System.out.println(jsonStr);
-			resp.getWriter().print(jsonStr);
+			sendJSONResponse(resp, jsonStr);
 
 		}
 
@@ -1323,6 +1322,7 @@ public class MasterData extends BaseServlet {
 			List<Building> buildings = soc.getBuildings();
 			for (Building building : buildings) {
 
+				buildings.remove(building);
 				long buildingID = Long.parseLong(req
 						.getParameter("buildingID[id]"));
 				System.out.println(buildingID + " "
@@ -1338,7 +1338,7 @@ public class MasterData extends BaseServlet {
 					userSessionProfile.setCurrentSociety(refreshedSoc);
 					req.getSession().setAttribute("userSessionProfile", userSessionProfile);
 					String jsonStr = "{\"Result\":\"OK\"}";
-					resp.getWriter().print(jsonStr);
+					sendJSONResponse(resp, jsonStr);
 					break;
 				}
 			}
@@ -1385,7 +1385,7 @@ public class MasterData extends BaseServlet {
 			userSessionProfile.setCurrentSociety(refreshedSoc);
 			req.getSession().setAttribute("userSessionProfile", userSessionProfile);
 			String jsonStr = "{\"Result\":\"OK\"}";
-			resp.getWriter().print(jsonStr);
+			sendJSONResponse(resp, jsonStr);
 		}
 	}
 	 
@@ -1410,7 +1410,7 @@ public class MasterData extends BaseServlet {
 			jsonStr = "{\"Result\":\"OK\",\"Records\":" + jsonStr
 					+ ", \"TotalRecordCount\":\"" + socAssets.size() + "\"}";
 		}
-		resp.getWriter().print(jsonStr);
+		sendJSONResponse(resp, jsonStr);
 
 	} 
 	
@@ -1443,7 +1443,7 @@ public class MasterData extends BaseServlet {
 				req.getSession().setAttribute("userSessionProfile", userSessionProfile);
 				String jsonStr = "{\"Result\":\"OK\",\"Record\":"
 						+ building.serializedJSON() + "}";
-				resp.getWriter().print(jsonStr);
+				sendJSONResponse(resp, jsonStr);
 			}
 
 		} else {
@@ -1474,7 +1474,7 @@ public class MasterData extends BaseServlet {
 						req.getSession().setAttribute("userSessionProfile", userSessionProfile);
 						String jsonStr = "{\"Result\":\"OK\",\"Record\":"
 								+ building.serializedJSON() + "}";
-						resp.getWriter().print(jsonStr);
+						sendJSONResponse(resp, jsonStr);
 						break;
 					}
 				}
@@ -1503,7 +1503,7 @@ public class MasterData extends BaseServlet {
 		}
 		jsonStr = jsonStr.substring(0, jsonStr.length() - 1) + "]}";
 		System.out.println(jsonStr);
-		resp.getWriter().print(jsonStr);
+		sendJSONResponse(resp, jsonStr);
 
 	}
 	
@@ -1530,7 +1530,7 @@ public class MasterData extends BaseServlet {
 			jsonStr = "{\"Result\":\"OK\",\"Records\":" + jsonStr
 					+ ", \"TotalRecordCount\":\"" + socbuildings.size() + "\"}";
 		}
-		resp.getWriter().print(jsonStr);
+		sendJSONResponse(resp, jsonStr);
 
 	}
 
@@ -1539,7 +1539,8 @@ public class MasterData extends BaseServlet {
 		if (req.getParameter("societyID").equalsIgnoreCase("")) {
 			// code to add society
 			Society soc = new Society();
-			soc.setName(req.getParameter("societyName"));
+			//soc.setName(req.getParameter("societyName"));
+			soc.setName(URLDecoder.decode(req.getParameter("societyName"), "UTF-8"));
 			soc.setEmail(req.getParameter("email"));
 			soc.setPhone(req.getParameter("phone"));
 			soc.setArea(req.getParameter("area"));
@@ -1599,7 +1600,8 @@ public class MasterData extends BaseServlet {
 					.getSession().getAttribute("userSessionProfile");
 			if (null != userSessionProfile) {
 				Society soc = userSessionProfile.getCurrentSociety();
-				soc.setName(req.getParameter("societyName"));
+				//soc.setName(req.getParameter("societyName"));
+				soc.setName(URLDecoder.decode(req.getParameter("societyName"), "UTF-8"));
 				soc.setEmail(req.getParameter("email"));
 				soc.setPhone(req.getParameter("phone"));
 				soc.setArea(req.getParameter("area"));

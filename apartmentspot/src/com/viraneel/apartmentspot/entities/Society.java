@@ -70,6 +70,8 @@ public class Society extends BaseEntity {
 	@Unowned
 	private List<Building> buildings;
 	
+	
+
 	public List<Building> getBuildings() {
 		return buildings;
 	}

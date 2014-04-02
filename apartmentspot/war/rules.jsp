@@ -1,4 +1,6 @@
-
+<script type="text/javascript" src="js/pramukhime.js"></script>
+<script type="text/javascript" src="js/pramukhindic.js"></script>
+<script type="text/javascript" src="js/pramukhime-common.js"></script>
 <div>Select language <select id="drpLanguage"
 						onchange="javascript:changeLanguage(this.options[this.selectedIndex].value);" 
 						name="drpLanguage" title="Choose Language" class="big">

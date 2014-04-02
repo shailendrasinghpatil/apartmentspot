@@ -173,7 +173,7 @@ public class Accounting extends BaseServlet {
 				refund.setRefundDate(refundDate.getTime());
 			}
 			
-			if (null != req.getParameter("refundType")) {
+			if (null != req.getParameter("billingHeadType")) {
 
 				for (BillingHeadType refundType : getBillingHeadType()) {
 					if (refundType.getBillingHeadType().equalsIgnoreCase(
@@ -242,7 +242,7 @@ public class Accounting extends BaseServlet {
 							refund.setRefundDate(refundDate.getTime());
 						}
 						
-						if (null != req.getParameter("refundType")) {
+						if (null != req.getParameter("billingHeadType")) {
 
 							for (BillingHeadType refundType : getBillingHeadType()) {
 								if (refundType.getBillingHeadType().equalsIgnoreCase(

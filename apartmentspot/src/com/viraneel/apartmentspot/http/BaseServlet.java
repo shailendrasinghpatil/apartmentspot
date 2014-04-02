@@ -1,5 +1,6 @@
 package com.viraneel.apartmentspot.http;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
@@ -7,13 +8,15 @@ import javax.jdo.PersistenceManager;
 import javax.jdo.Query;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import com.google.appengine.api.datastore.Key;
 import com.google.gson.Gson;
-import com.viraneel.apartmentspot.entities.HouseType;
-import com.viraneel.apartmentspot.entities.FacilityType;
-import com.viraneel.apartmentspot.entities.VendorType;
 import com.viraneel.apartmentspot.entities.BillingHeadType;
+import com.viraneel.apartmentspot.entities.ExpenseType;
+import com.viraneel.apartmentspot.entities.FacilityType;
+import com.viraneel.apartmentspot.entities.ForumType;
+import com.viraneel.apartmentspot.entities.HouseType;
 import com.viraneel.apartmentspot.entities.Member;
 import com.viraneel.apartmentspot.entities.PermissionLevel;
 import com.viraneel.apartmentspot.entities.ResidentType;
@@ -22,10 +25,10 @@ import com.viraneel.apartmentspot.entities.Section;
 import com.viraneel.apartmentspot.entities.Society;
 import com.viraneel.apartmentspot.entities.SocietyMemberRole;
 import com.viraneel.apartmentspot.entities.Status;
+import com.viraneel.apartmentspot.entities.VendorType;
 import com.viraneel.apartmentspot.entities.WebSite;
 import com.viraneel.apartmentspot.framework.persistence.PersistenceMgrFactory;
 import com.viraneel.apartmentspot.valuebeans.UserSessionProfile;
-import com.viraneel.apartmentspot.entities.ExpenseType;
 
 
 public abstract class BaseServlet extends HttpServlet {
@@ -40,6 +43,7 @@ public abstract class BaseServlet extends HttpServlet {
 	private List<VendorType> vendorTypes;
 	private List<BillingHeadType> billingHeadTypes;
 	private List<ExpenseType> expenseTypes;
+	private List<ForumType> forumTypes;
 
 	public BaseServlet() {
 		super();
@@ -510,4 +514,55 @@ public abstract class BaseServlet extends HttpServlet {
 					q.setOrdering(paramOrderBy);
 				}
 			}
+
+	protected ForumType getForumType(String forumTypeName) {
+		if (null == forumTypes) {
+			getForumTypes();
+		}
+		
+		ForumType forumReturnType = null;
+		for(ForumType forumType: forumTypes){
+			if(forumTypeName.equalsIgnoreCase(forumType.getForumType())){
+				forumReturnType = forumType;
+				break;
+			}
+		}
+		
+		return forumReturnType;
+	}
+
+	protected List<ForumType> getForumTypes() {
+		Query q1 = pm
+				.newQuery("select from com.viraneel.apartmentspot.entities.ForumType");
+		try {
+			forumTypes = (List<ForumType>) q1.execute();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		if (forumTypes == null || forumTypes.isEmpty()) {
+			ForumType discussion = new ForumType("DISCUSSION");
+			ForumType complaint = new ForumType("COMPLAINT");
+			ForumType message = new ForumType("MESSAGE");
+			ForumType notice = new ForumType("NOTICE");
+			ForumType classified = new ForumType("CLASSIFIED");
+			ForumType poll = new ForumType("POLL");
+
+			pm.makePersistent(discussion);
+			pm.makePersistent(complaint);
+			pm.makePersistent(message);
+			pm.makePersistent(notice);
+			pm.makePersistent(classified);
+			pm.makePersistent(poll);
+
+			forumTypes = (List<ForumType>) q1.execute();
+		}
+		return forumTypes;
+	}
+
+	protected void sendJSONResponse(HttpServletResponse resp, String jsonStr) throws IOException {
+		resp.setContentType("application/json");
+		resp.setCharacterEncoding("UTF-8");		
+		resp.getWriter().print(jsonStr);
+	}
 }

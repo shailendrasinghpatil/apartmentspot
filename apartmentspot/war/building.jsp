@@ -111,7 +111,11 @@ div#buildings-contain table td,div#buildings-contain table th {
 	                },
 	                buildingName: {
 	                    title: 'Building Name',
-	                    width: '30%'
+	                    width: '30%',
+	                    display: function (data){
+	                    	//alert("आला रे" + data.record.buildingName);
+	                    	return data.record.buildingName;
+	                    }
 	                },
 	                totalFloors: {
 	                    title: 'Floors',
