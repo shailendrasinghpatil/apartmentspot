@@ -119,8 +119,8 @@
 	width: 80px
 }
 
-.ui-wysiwyg-fontdropdown,.ui-wysiwyg-fontbgcdropdown,.ui-wysiwyg-fontcldropdown
-	{
+.ui-wysiwyg-fontdropdown,.ui-wysiwyg-fontbgcdropdown,.ui-wysiwyg-fontcldropdown,.ui-wysiwyg-languagedropdown
+{
 	overflow: auto;
 	height: 120px;
 }
@@ -128,6 +128,11 @@
 .ui-wysiwyg-fontdropdown {
 	width: 200px
 }
+
+.ui-wysiwyg-languagedropdown {
+	width: 200px
+}
+
 
 .ui-wysiwyg-container {
 	display: table-cell

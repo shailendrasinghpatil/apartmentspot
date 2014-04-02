@@ -124,17 +124,34 @@ z-index:999;
 	<script>
 		$(document).ready(
 		function() {
+			
 	   <%
 			String active="0";
 			String subactive="0";
 			if(null != request.getParameter("active")){active = request.getParameter("active"); }
 			if(null != request.getParameter("subactive")){subactive = request.getParameter("subactive"); }
 	   %>
-			$("#tabs").tabs({active :<%=active%>}).addClass("ui-tabs-vertical ui-helper-clearfix");
+			$("#tabs").tabs({
+					active :<%=active%>, 
+					activate: function( event, ui ) {
+						
+						if(null != $("#subtabs-" + (ui.oldTab.index()+1)))
+						{
+							$("#subtabs-" + (ui.oldTab.index()+1)).tabs("destroy");
+						}
+						if(null != $("#subtabs-" + (ui.newTab.index()+1)))
+						{
+							$("#subtabs-" + (ui.newTab.index()+1)).tabs({active:0});
+						}
+					}
+				}).addClass("ui-tabs-vertical ui-helper-clearfix");
 			$("#tabs li").removeClass("ui-corner-top").addClass("ui-corner-left");
-		<%	for(int k=1; k <= j; k++){%>
-				$("#subtabs-<%=k%>").tabs(<%if(active.equals("" + (k-1))){%>{active :<%=subactive%>}<%}%>);				
-		<%	} %>		
+
+		<%
+			if(null != request.getParameter("subactive")){
+			%>
+				$("#subtabs-<%=Long.parseLong(active)+1%>").tabs({active :<%=subactive%>});				
+		<%	}%>		
 			
 		});
 	</script>

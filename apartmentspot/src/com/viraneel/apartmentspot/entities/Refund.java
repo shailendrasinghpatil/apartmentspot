@@ -40,8 +40,6 @@ public class Refund extends BaseEntity implements Comparable {
 	@Persistent
 	private String refundTo;
 	
-	
-	
 	public Key getRefundID() {
 		return refundID;
 	}

@@ -19,16 +19,16 @@
 <script src="js/jquery-1.9.1.js"></script>
 <script src="js/jquery-ui.js"></script>
 <script type="text/javascript" src="js/jquery.ui.menubar.js"></script>
-<script src="js/jquery.jtable.min.js" type="text/javascript"></script>
+<script src="js/jquery.jtable.js" type="text/javascript"></script>
 <script src="js/jquery.juirte.js"></script>
-<script type="text/javascript" src="js/pramukhime.js"></script>
-<script type="text/javascript" src="js/pramukhindic.js"></script>
-<script type="text/javascript" src="js/pramukhime-common.js"></script>
+
+<script type="text/javascript" src="js/json2.js"></script>
 <link href="css/themes/jqueryui/jtable_jqueryui.css" rel="stylesheet"
 	type="text/css" />
+
+<link rel="stylesheet" type="text/css" href="css/jquery.juirte.css" />
 <link rel="stylesheet" href="css/apartmentspot.css" type="text/css"
 	media="screen" />
-<link rel="stylesheet" type="text/css" href="css/jquery.juirte.css" />
 <link type="text/css" href="css/pramukhtypepad.css" rel="Stylesheet" />
 <div id="headerbar" class="ui-widget-header">
 	<div id="title" class="logoHeader">
@@ -42,9 +42,9 @@
 				String firstName = "";
 				List<Section> sections = null;
 				if (null != userSessionProfile) {
-			Member currentUser = userSessionProfile.getCurrentUser();
-			firstName = currentUser.getFirstName();
-			sections = userSessionProfile.getAccessibleSections();
+					Member currentUser = userSessionProfile.getCurrentUser();
+					firstName = currentUser.getFirstName();
+					sections = userSessionProfile.getAccessibleSections();
 				}
 		%>
 		Welcome
@@ -158,10 +158,7 @@
 					<li><a href="#">Service Request</a></li>
 					<li><a href="#">Service Request Report</a></li>
 				</ul></li>
-			<li><a href="http://communityadda.appspot.com/">MailBox</a>
-				<ul>
-					<li><a href="#">Society Inbox</a></li>
-				</ul></li>
+			<li><a href="forum.jsp">Forum</a></li>
 			<li><a href="http://communityadda.appspot.com/">Polls</a>
 				<ul>
 					<li><a href="#">Conduct a Poll</a></li>
@@ -183,5 +180,6 @@
 			buttons : true
 		});
 		//$('li.ui-menu-item a.ui-corner-all').addClass('ui-widget-header');
+		$("#ChangeTheme").button();
 	});
 </script>

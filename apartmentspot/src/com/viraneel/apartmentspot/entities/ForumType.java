@@ -8,6 +8,10 @@ public class ForumType extends BaseEntity {
 	@Persistent
 	private String forumType;
 
+	public ForumType(String type) {
+		this.forumType=type;
+	}
+
 	public String getForumType() {
 		return forumType;
 	}
