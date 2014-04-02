@@ -18,7 +18,7 @@ $.fn.juirte = function(options){
 	var settings = $.extend({
 		resizable: false,
 		stylesheet: '',
-		language: [['html', 'Toggle HTML'],['insertimage', 'Insert Image'],['inserturl', 'Insert URL'],['paragraph', 'Paragraph'],['address', 'Address'],['heading', 'Heading'],['bgcolor', 'Background Color'],['fontcolor', 'Font Color'],['fontsize', 'Font Size'],['font', 'Font'],['paragraph', 'Paragraph'],['link', 'Link'],['removelink', 'Remove Link'],['italic', 'Italic'],['bold', 'Bold'],['underline', 'Underline'],['strike', 'Strike'],['hr', 'Horizontal Rule'],['ol', 'Ordered List'],['ul', 'Unordered List'],['center', 'Center'],['left', 'Left'],['full', 'Full'],['right', 'Right'],['indent', 'Indent'],['outdent', 'Outdent'],['superscript', 'Superscript'],['subscript', 'Subscript'],['rm', 'Remove Formating'], ['language', 'Language'], ['?', '?']],
+		language: [['html', 'Toggle HTML'],['insertimage', 'Insert Image'],['inserturl', 'Insert URL'],['paragraph', 'Paragraph'],['address', 'Address'],['heading', 'Heading'],['bgcolor', 'Background Color'],['fontcolor', 'Font Color'],['fontsize', 'Font Size'],['font', 'Font'],['paragraph', 'Paragraph'],['link', 'Link'],['removelink', 'Remove Link'],['italic', 'Italic'],['bold', 'Bold'],['underline', 'Underline'],['strike', 'Strike'],['hr', 'Horizontal Rule'],['ol', 'Ordered List'],['ul', 'Unordered List'],['center', 'Center'],['left', 'Left'],['full', 'Full'],['right', 'Right'],['indent', 'Indent'],['outdent', 'Outdent'],['superscript', 'Superscript'],['subscript', 'Subscript'],['rm', 'Remove Formating'], ['language', 'English'], ['?', '?']],
 		width : "400px",
 		height : "200px",
 		colors : ['#FFFFFF', '#C0C0C0', '#808080', '#000000', '#FF0000', '#800000', '#FFFF00', '#808000', '#00FF00', '#008000', '#00FFFF', '#008080', '#0000FF', '#000080', '#FF00FF', '#800080'],
@@ -118,6 +118,8 @@ $.fn.juirte = function(options){
 		pramukhIME.enable(editor.id);
 		// disable css mode for editing
 		fnDisableCSS();
+		
+		var selectedLanguage = 'English';
 
 		// update original textarea when contents change
 		$('.'+_id+'-wysiwyg-content').contents().bind("keyup keydown keypress focus blur", function() {fnSyncContents()});
@@ -135,6 +137,13 @@ $.fn.juirte = function(options){
 			"class" : "ui-wysiwyg-menu-wrap",
 			css : { width : '100%' }
 		}).appendTo(wysiwyg_menu);
+		
+		//create language dialog help
+		var helpDialog = $('<div/>', {
+					id: 'helpDialog-wysiwyg-language',
+					title : 'Keyboard Map'
+				}).appendTo(_container);
+		
 
 		// create button wrappers for rows/spacers
 		var _i=0;
@@ -317,6 +326,7 @@ $.fn.juirte = function(options){
 					$('<li/>', {click: function(){
 						fnSetlanguage(v, _languagelink);
 						$(_wrapper).find('.ui-wysiwyg-dd-lngbtn span').text(v);
+						selectedLanguage = v;
 						return false;
 					}}).html('<a href="#">'+v+'</a>').appendTo(_languagemenu);
 				});
@@ -325,6 +335,30 @@ $.fn.juirte = function(options){
 					"class" : 'ui-wysiwyg-dropdown ui-wysiwyg-languagedropdown ui-widget ui-widget-content ui-corner-all',
 					style: ' margin: 0px'
 				}).append(_languagemenu).appendTo(_container);
+			}
+			else if (v == '?'){
+				var _langhelpmenu=$("<a/>",{
+					href : "#",
+					title: _options.title,
+					style: _options.style,
+					text : _options.text,
+					"class" : 'ui-wysiwyg-dd-btn ui-wysiwyg-btn ui-wysiwyg-btn-'+v,
+					click : function(){						
+						if(selectedLanguage != 'English'){
+							var $dialog = $('<img src="img/' + pramukhIME.getHelpImage() + '" />')
+						    .dialog({
+						        autoOpen: true,
+						        title : 'Keyboard to characters of ' + selectedLanguage,
+						        resizeable: false,
+						        modal: true,
+						        width: 600,
+						        closeOnEscape: true,
+						        dialogClass: 'zoom'
+						    });				
+						}
+						return false;
+					}
+				}).button(_options.icon).appendTo(_buttonwrap);
 			}
 			else if(v == 'heading'){
 				var _headmenu=$("<a/>",{
