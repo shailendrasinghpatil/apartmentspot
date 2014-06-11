@@ -136,6 +136,7 @@ div#buildings-contain table td,div#buildings-contain table th {
 
 <div id="buildings-contain" class="ui-widget">
 
+
 </div>
 
 
