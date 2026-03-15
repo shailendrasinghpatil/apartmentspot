@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+             http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.viraneel</groupId>
+    <artifactId>apartmentspot</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>war</packaging>
+
+    <name>ApartmentSpot</name>
+    <description>Apartment community management application on Google App Engine Java 8</description>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.source>1.7</maven.compiler.source>
+        <maven.compiler.target>1.7</maven.compiler.target>
+        <!-- Path to the pre-existing JARs bundled in the project -->
+        <lib.dir>${project.basedir}/war/WEB-INF/lib</lib.dir>
+    </properties>
+
+    <dependencies>
+        <!-- Servlet / JSP API — provided by the App Engine runtime container -->
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>servlet-api</artifactId>
+            <version>2.5</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>javax.servlet.jsp</groupId>
+            <artifactId>jsp-api</artifactId>
+            <version>2.1</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <!--
+            All runtime JARs below are already bundled under war/WEB-INF/lib/.
+            They are declared with scope=system so Maven uses them for
+            compilation without re-adding them to the WAR output (the WAR
+            plugin picks them up directly from warSourceDirectory=war).
+        -->
+
+        <!-- Google App Engine API -->
+        <dependency>
+            <groupId>com.google.appengine</groupId>
+            <artifactId>appengine-api-1.0-sdk</artifactId>
+            <version>1.7.6</version>
+            <scope>system</scope>
+            <systemPath>${lib.dir}/appengine-api-1.0-sdk-1.7.6.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>com.google.appengine</groupId>
+            <artifactId>appengine-api-labs</artifactId>
+            <version>1.7.6</version>
+            <scope>system</scope>
+            <systemPath>${lib.dir}/appengine-api-labs.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>com.google.appengine</groupId>
+            <artifactId>appengine-jsr107cache</artifactId>
+            <version>1.7.6</version>
+            <scope>system</scope>
+            <systemPath>${lib.dir}/appengine-jsr107cache-1.7.6.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>com.google.appengine</groupId>
+            <artifactId>appengine-endpoints</artifactId>
+            <version>1.7.6</version>
+            <scope>system</scope>
+            <systemPath>${lib.dir}/appengine-endpoints.jar</systemPath>
+        </dependency>
+
+        <!-- DataNucleus ORM for App Engine (JDO) -->
+        <!--
+            datanucleus-core is intentionally NOT listed here as a project
+            dependency: the application source does not import any
+            org.datanucleus classes directly, so it is not needed for
+            compilation.  The 3.1.3 runtime JAR is bundled in
+            war/WEB-INF/lib/ and will be included in the WAR by the
+            war plugin.  Keeping it off the compile classpath avoids a
+            duplicate-plugin error in the DataNucleus enhancer step, where
+            datanucleus-core 3.2.15 is used (see enhancer plugin below).
+        -->
+        <dependency>
+            <groupId>org.datanucleus</groupId>
+            <artifactId>datanucleus-api-jdo</artifactId>
+            <version>3.1.3</version>
+            <scope>system</scope>
+            <systemPath>${lib.dir}/datanucleus-api-jdo-3.1.3.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>org.datanucleus</groupId>
+            <artifactId>datanucleus-api-jpa</artifactId>
+            <version>3.1.3</version>
+            <scope>system</scope>
+            <systemPath>${lib.dir}/datanucleus-api-jpa-3.1.3.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>com.google.appengine.orm</groupId>
+            <artifactId>datanucleus-appengine</artifactId>
+            <version>2.1.2</version>
+            <scope>system</scope>
+            <systemPath>${lib.dir}/datanucleus-appengine-2.1.2.jar</systemPath>
+        </dependency>
+
+        <!-- JDO / JPA specifications -->
+        <dependency>
+            <groupId>javax.jdo</groupId>
+            <artifactId>jdo-api</artifactId>
+            <version>3.0.1</version>
+            <scope>system</scope>
+            <systemPath>${lib.dir}/jdo-api-3.0.1.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.geronimo.specs</groupId>
+            <artifactId>geronimo-jpa_2.0_spec</artifactId>
+            <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>${lib.dir}/geronimo-jpa_2.0_spec-1.0.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>javax.transaction</groupId>
+            <artifactId>jta</artifactId>
+            <version>1.1</version>
+            <scope>system</scope>
+            <systemPath>${lib.dir}/jta-1.1.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>net.sf.jsr107cache</groupId>
+            <artifactId>jsr107cache</artifactId>
+            <version>1.1</version>
+            <scope>system</scope>
+            <systemPath>${lib.dir}/jsr107cache-1.1.jar</systemPath>
+        </dependency>
+
+        <!-- Bytecode manipulation (required by DataNucleus enhancer) -->
+        <dependency>
+            <groupId>org.ow2.asm</groupId>
+            <artifactId>asm</artifactId>
+            <version>4.0</version>
+            <scope>system</scope>
+            <systemPath>${lib.dir}/asm-4.0.jar</systemPath>
+        </dependency>
+
+        <!-- Utility libraries -->
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>2.2.3</version>
+            <scope>system</scope>
+            <systemPath>${lib.dir}/gson-2.2.3.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+            <!-- json.jar is a legacy bundled JAR with no version in its filename.
+                 The version here is used only as a Maven coordinate placeholder. -->
+            <version>20131018</version>
+            <scope>system</scope>
+            <systemPath>${lib.dir}/json.jar</systemPath>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <!-- Java source lives in src/ (non-standard Maven layout) -->
+        <sourceDirectory>src</sourceDirectory>
+
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.11.0</version>
+                <configuration>
+                    <source>1.7</source>
+                    <target>1.7</target>
+                </configuration>
+            </plugin>
+
+            <!--
+                WAR plugin: use the existing war/ directory as the web-app
+                source so all JSPs, CSS, JS, images, and WEB-INF/lib JARs
+                are included as-is.
+            -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>3.3.2</version>
+                <configuration>
+                    <warSourceDirectory>war</warSourceDirectory>
+                    <webXml>war/WEB-INF/web.xml</webXml>
+                    <!-- Exclude the auto-generated local dev DB from the WAR -->
+                    <packagingExcludes>WEB-INF/appengine-generated/**</packagingExcludes>
+                </configuration>
+            </plugin>
+
+            <!--
+                DataNucleus byte-code enhancer — must run after compilation so
+                that JDO entity classes work correctly at runtime with the
+                App Engine Datastore.
+
+                datanucleus-enhancer:3.1.1 is a standalone enhancer JAR
+                compatible with datanucleus-core:3.1.3 (the version bundled in
+                war/WEB-INF/lib/).  It is added as a plugin dependency so its
+                DataNucleusEnhancer class is on the forked JVM's classpath
+                without conflicting with the project's system-scoped core JAR
+                (they have different OSGi bundle IDs: org.datanucleus.enhancer
+                vs org.datanucleus).
+            -->
+            <plugin>
+                <groupId>org.datanucleus</groupId>
+                <artifactId>datanucleus-maven-plugin</artifactId>
+                <version>3.3.2</version>
+                <configuration>
+                    <api>JDO</api>
+                    <verbose>false</verbose>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>process-classes</phase>
+                        <goals>
+                            <goal>enhance</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <dependencies>
+                    <!--
+                        datanucleus-enhancer:3.1.1 is the separate enhancer
+                        artifact for DataNucleus 3.1.x (DataNucleusEnhancer
+                        was split out from datanucleus-core in the 3.1 series).
+                        It is API-compatible with the datanucleus-core:3.1.3
+                        and datanucleus-api-jdo:3.1.3 JARs already on the
+                        project classpath.
+                    -->
+                    <dependency>
+                        <groupId>org.datanucleus</groupId>
+                        <artifactId>datanucleus-enhancer</artifactId>
+                        <version>3.1.1</version>
+                    </dependency>
+                    <!--
+                        datanucleus-core:3.1.3 is NOT a project compile dep
+                        (to avoid duplicates with the bundled lib JAR on the
+                        compile classpath), so it must be listed here for the
+                        enhancer's forked JVM.
+                    -->
+                    <dependency>
+                        <groupId>org.datanucleus</groupId>
+                        <artifactId>datanucleus-core</artifactId>
+                        <version>3.1.3</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
+
+            <!--
+                App Engine Maven plugin (Cloud SDK-based).
+                Usage:
+                  mvn package appengine:deploy          — deploy to App Engine
+                  mvn appengine:run                     — run locally with dev server
+                Set GOOGLE_CLOUD_PROJECT or pass -Dapp.deploy.projectId=<your-project>
+            -->
+            <plugin>
+                <groupId>com.google.cloud.tools</groupId>
+                <artifactId>appengine-maven-plugin</artifactId>
+                <version>2.4.4</version>
+                <configuration>
+                    <deploy.projectId>GCLOUD_CONFIG</deploy.projectId>
+                    <deploy.version>GCLOUD_CONFIG</deploy.version>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>
