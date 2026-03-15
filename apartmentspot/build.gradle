@@ -1,0 +1,87 @@
+plugins {
+    id 'java'
+    id 'war'
+}
+
+group = 'com.viraneel'
+version = '1.0-SNAPSHOT'
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_7
+    targetCompatibility = JavaVersion.VERSION_1_7
+}
+
+// Non-standard layout: Java sources in src/, web app resources in war/
+sourceSets {
+    main {
+        java {
+            srcDirs = ['src']
+        }
+        resources {
+            srcDirs = ['src']
+            exclude '**/*.java'
+        }
+    }
+}
+
+// Web application directory (non-standard: war/ instead of src/main/webapp/)
+war {
+    webAppDirectory = file('war')
+    exclude 'WEB-INF/appengine-generated/**'
+}
+
+configurations {
+    dnEnhancer
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    // Servlet / JSP API — provided by the App Engine runtime container
+    compileOnly 'javax.servlet:servlet-api:2.5'
+    compileOnly 'javax.servlet.jsp:jsp-api:2.1'
+
+    // Runtime JARs already bundled in war/WEB-INF/lib/.  Declared compileOnly
+    // so Gradle does not add them a second time to WEB-INF/lib in the WAR output.
+    compileOnly fileTree(dir: "${projectDir}/war/WEB-INF/lib", include: '*.jar')
+
+    // DataNucleus byte-code enhancer classpath (not bundled in the WAR).
+    // Only the standalone enhancer JAR is fetched from Maven; all other
+    // DataNucleus / JDO dependencies come from the bundled war/WEB-INF/lib/
+    // to avoid duplicate-bundle errors from the DataNucleus OSGi registry.
+    dnEnhancer 'org.datanucleus:datanucleus-enhancer:3.1.1'
+}
+
+/*
+ * DataNucleus byte-code enhancer.
+ * Runs after compilation; JDO entity classes are enhanced in-place in the
+ * build output directory.  The standalone datanucleus-enhancer JAR is fetched
+ * from Maven; all other runtime dependencies come from war/WEB-INF/lib/ to
+ * avoid duplicate-bundle conflicts in the DataNucleus OSGi plugin registry.
+ */
+task enhance(type: JavaExec, dependsOn: [compileJava, processResources]) {
+    def classesDir = sourceSets.main.output.classesDirs.singleFile
+    classpath = configurations.dnEnhancer +
+            fileTree(dir: "${projectDir}/war/WEB-INF/lib", include: '*.jar') +
+            files(classesDir) +
+            files(sourceSets.main.output.resourcesDir)
+    mainClass = 'org.datanucleus.enhancer.DataNucleusEnhancer'
+    doFirst {
+        args = ['-api', 'JDO'] +
+               fileTree(classesDir).include('**/*.class').files.collect { it.absolutePath }
+    }
+}
+
+classes.dependsOn enhance
+
+/*
+ * App Engine deployment.
+ * Stage and deploy using the gcloud CLI:
+ *
+ *   ./gradlew war                   — build the WAR
+ *   gcloud app deploy build/libs/apartmentspot-1.0-SNAPSHOT.war
+ *
+ * Or use the Maven wrapper (./mvnw appengine:deploy) if the Maven build is preferred.
+ */

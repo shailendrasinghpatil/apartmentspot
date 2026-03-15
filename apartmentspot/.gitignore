@@ -1,6 +1,10 @@
 # Maven build output
 target/
 
+# Gradle build output
+build/
+.gradle/
+
 # Local App Engine dev server database (not for deployment)
 war/WEB-INF/appengine-generated/local_db.bin
 
