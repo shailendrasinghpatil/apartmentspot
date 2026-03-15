@@ -1,0 +1,2 @@
+# Prevent temporary extracted class files from being committed
+*.class
