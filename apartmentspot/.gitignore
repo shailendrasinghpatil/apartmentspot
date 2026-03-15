@@ -1,0 +1,14 @@
+# Maven build output
+target/
+
+# Local App Engine dev server database (not for deployment)
+war/WEB-INF/appengine-generated/local_db.bin
+
+# IDE files
+.classpath
+.project
+.settings/
+
+# OS files
+.DS_Store
+Thumbs.db
