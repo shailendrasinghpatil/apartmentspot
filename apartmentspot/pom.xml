@@ -146,21 +146,21 @@
         </dependency>
 
         <!-- Utility libraries -->
+        <!-- gson upgraded from 2.2.3 to 2.10.1 to fix Deserialization of Untrusted Data (CVE) -->
         <dependency>
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>
-            <version>2.2.3</version>
+            <version>2.10.1</version>
             <scope>system</scope>
-            <systemPath>${lib.dir}/gson-2.2.3.jar</systemPath>
+            <systemPath>${lib.dir}/gson-2.10.1.jar</systemPath>
         </dependency>
+        <!-- org.json upgraded from 20131018 to 20231013 to fix three DoS vulnerabilities -->
         <dependency>
             <groupId>org.json</groupId>
             <artifactId>json</artifactId>
-            <!-- json.jar is a legacy bundled JAR with no version in its filename.
-                 The version here is used only as a Maven coordinate placeholder. -->
-            <version>20131018</version>
+            <version>20231013</version>
             <scope>system</scope>
-            <systemPath>${lib.dir}/json.jar</systemPath>
+            <systemPath>${lib.dir}/json-20231013.jar</systemPath>
         </dependency>
     </dependencies>
 
